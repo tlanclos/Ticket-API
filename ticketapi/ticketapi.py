@@ -13,7 +13,7 @@ def home():
     return 'Welcome to Ticket-API!'
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     """
     Login page
