@@ -49,6 +49,12 @@ The run this command
 a2enmod wsgi_express
 ```
 
+## Setup apache SSL
+Run this command
+```
+a2enmod ssl
+```
+
 
 ## Remove the default apache html file
 ```
@@ -60,6 +66,20 @@ rm /var/www/html/index.html
 useradd -g www-data -M -s /usr/sbin/nologin ticket-api
 passwd ticket-api
 ```
+
+## Install SSL certificates
+Please ensure you install SSL certificates in the following locations with the following permissions and names.
+- Certificate:
+  - Location: /etc/ssl/certs/techneauxcmps.crt
+  - Mode: 0644
+  - Owner: root
+  - Group: root
+- Private Key:
+  - Location: /etc/ssl/private/techneauxcmps.key
+  - Mode: 640
+  - Owner: root
+  - Group: ssl-cert
+
 
 ## Run the make install at the root of the github repo Ticket-API
 ```
