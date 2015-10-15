@@ -1,0 +1,7 @@
+{
+  "uri": "http://localhost:5443/login",
+  "payload": {
+    "companyID": "Techneaux",
+    "password": "superstrongsecurepassword"
+  }
+}
