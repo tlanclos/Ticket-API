@@ -18,7 +18,7 @@ def login():
     Login page
     :return:
     """
-    pass
+    return 'Ticket-API login URI'
 
 
 @app.route('/update-employee')
@@ -27,7 +27,7 @@ def update_employee():
     Update Employee page
     :return:
     """
-    pass
+    return 'Ticket-API update-employee URI'
 
 
 @app.route('/submit-ticket')
@@ -36,8 +36,8 @@ def submit_ticket():
     Submit Ticket page
     :return:
     """
-    pass
+    return 'Ticket-API submit-ticket URI'
 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5443)
