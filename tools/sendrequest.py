@@ -4,12 +4,17 @@ a request. This file will be loaded and a request will be sent to the server
 defined in the json file. The request is also specified in the json file.
 Given a directory, this script can run all json files within that directory.
 The json file should be in the format:
+
 {
     "uri": "http://localhost:5443/login",
     "payload": {
         ...
     }
 }
+
+It is important to note that this will only work with non-ssl connections
+currently. As previously mentioned, a better version of this will be
+written later.
 """
 import os
 import json
@@ -38,7 +43,7 @@ def send_request(uri, payload):
     :param payload: payload to send with the url
     :return:
     """
-    response = requests.post(url=uri, data=json.dumps(payload))
+    response = requests.post(url=uri, data=json.dumps(payload), allow_redirects=False)
     print('Response Code:', response.status_code)
     print('Response Reason:', response.reason)
     print('==== BODY ====')

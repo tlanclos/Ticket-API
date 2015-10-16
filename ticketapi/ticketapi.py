@@ -13,7 +13,7 @@ def home():
     return 'Welcome to Ticket-API!'
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login/', methods=['POST'], strict_slashes=False)
 def login():
     """
     Login page
@@ -22,7 +22,7 @@ def login():
     return 'Ticket-API login URI {data}'.format(data=request.data)
 
 
-@app.route('/update-employee', methods=['POST'])
+@app.route('/update-employee/', methods=['POST'], strict_slashes=False)
 def update_employee():
     """
     Update Employee page
@@ -31,7 +31,7 @@ def update_employee():
     return 'Ticket-API update-employee URI {data}'.format(data=request.data)
 
 
-@app.route('/submit-ticket', methods=['POST'])
+@app.route('/submit-ticket/', methods=['POST'], strict_slashes=False)
 def submit_ticket():
     """
     Submit Ticket page
