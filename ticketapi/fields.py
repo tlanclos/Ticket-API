@@ -180,6 +180,10 @@ class PhoneNumberField(StringField):
         return self.success()
 
 
+class ImageField(StringField):
+    pass
+
+
 if __name__ == '__main__':
     print(StringField('string', required=True).validate({'string': 'bob'}))
     print(StringField('string', min_length=3, max_length=3, required=True).validate({'string': 'bob'}))
