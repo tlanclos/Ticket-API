@@ -1,5 +1,6 @@
 import sys
 from validate_email import validate_email
+import phonenumbers
 
 
 class Field(object):
@@ -118,7 +119,7 @@ class EmailField(StringField):
     :param max_length: maximum length of the string (should be left as default)
     """
     def __init__(self, name, required=True, **kwargs):
-        super().__init__(name, required, **kwargs)
+        super().__init__(name, required=required, **kwargs)
         self.validators.append(EmailField._validate)
 
     def _validate(self, value):
@@ -134,12 +135,38 @@ class EmailField(StringField):
         return self.success()
 
 
+class PhoneNumberField(StringField):
+    def __init__(self, name, required=True, **kwargs):
+        super().__init__(name, required=required, **kwargs)
+        self.validators.append(PhoneNumberField._validate)
+
+    def _validate(self, value):
+        value = value.strip()
+        if not value.startswith('+'):
+            value = '+1' + value
+
+        try:
+            number = phonenumbers.parse(value)
+            if not phonenumbers.is_valid_number(number):
+                return self.failure('phone number does not match valid pattern for country code {code}'.format(
+                    code=number.country_code
+                ))
+        except Exception as e:
+            return self.failure(e)
+
+        return self.success()
+
+
 if __name__ == '__main__':
     print(StringField('string', required=True).validate({'string': 'bob'}))
     print(StringField('string', min_length=3, max_length=3, required=True).validate({'string': 'bob'}))
     print(StringField('string', min_length=4, max_length=3, required=True).validate({'string': 'bob'}))
     print(StringField('string', min_length=3, max_length=4, required=True).validate({'string': 'bob'}))
     print(StringField('string', required=False).validate({'string2': 'bob'}))
-    print(EmailField('test', required=True).validate({'test': 'bob3f@bob'}))
-    print(EmailField('test', required=True).validate({'test2': 'bob3f@bob'}))
-    print(EmailField('test', required=True).validate({'test': 'bob3f^bob'}))
+    print(EmailField('email', required=True).validate({'email': 'bob3f@bob'}))
+    print(EmailField('email', required=True).validate({'_email': 'bob3f@bob'}))
+    print(EmailField('email', required=True).validate({'email': 'bob3f^bob'}))
+    print(PhoneNumberField('phone', required=True).validate({'phone': '+442083661178'}))
+    print(PhoneNumberField('phone', required=True).validate({'phone': '(337)945-5244'}))
+    print(PhoneNumberField('phone', required=True).validate({'phone': '3379442213'}))
+    print(PhoneNumberField('phone', required=True).validate({'phone': '1234'}))
