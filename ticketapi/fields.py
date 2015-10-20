@@ -70,3 +70,39 @@ class Field(object):
                 return status, message
         else:
             return self.success()
+
+
+class StringField(Field):
+    """
+    Validates that a field is a string at a particular length
+
+    :param name: name of the field located within validation data
+    :param required: states whether or not the field is required in the validation data
+    :param min_length: minimum length of the string
+    :param max_length: maximum length of the string
+    """
+    def __init__(self, name, required=True, **kwargs):
+        super().__init__(name, required=required, **kwargs)
+        self.validators.append(StringField._validate)
+
+        self.min_length = kwargs.get('min_length', 0)
+        self.max_length = kwargs.get('max_length', sys.maxsize)
+
+    def _validate(self, value):
+        """
+        Validates a string by checking if the value is an instance of string class and
+        that the length fits within the min and max lengths specified by the field
+
+        :param data: data to validate
+        :return: success or failure as a tuple (status, message)
+        """
+        if not isinstance(value, str):
+            return self.failure('not an instance of a string')
+
+        if self.min_length <= len(value) <= self.max_length:
+            return self.success()
+
+        return self.failure('not within size bounds {mi} <= len(x) <= {ma}'.format(
+            mi=self.min_length,
+            ma=self.max_length
+        ))
