@@ -46,17 +46,16 @@ class Field(object):
         """
         return self.success()
 
-    def validate(self, data):
+    def validate(self, value):
         """
         Validation chain function that will look at the list of validate functions
         in self.validators and call them successively until one returns failure or
         all functions have been called
 
-        :param value: data to validate
+        :param value: value to validate
         :return: success or failure as a tuple (status, message)
         """
         # ensure the value exists if it is required
-        value = data.get(self.name)
         if self.required and value is None:
             return self.failure('required but does not exist')
 
@@ -97,15 +96,54 @@ class StringField(Field):
         :param value: value to validate
         :return: success or failure as a tuple (status, message)
         """
+        # check if the value is actually a string
         if not isinstance(value, str):
             return self.failure('not an instance of a string')
 
+        # check if the string fits within the length constraints
         if self.min_length <= len(value) <= self.max_length:
             return self.success()
 
-        return self.failure('not within size bounds {mi} <= len(x) <= {ma}'.format(
+        return self.failure('not within size bounds {mi} <= len(string) <= {ma}'.format(
             mi=self.min_length,
             ma=self.max_length
+        ))
+
+
+class NumberField(Field):
+    """
+    Validates a number to ensure it's value is within the value constraints
+
+    :param name: name of the field located within validation data
+    :param required: states whether or not the field is required in the validation data
+    :param min_value: minimum value this number can take
+    :param max_value: maximum value this number can take
+    """
+    def __init__(self, name, required=True, **kwargs):
+        super().__init__(name, required=required, **kwargs)
+        self.validators.append(NumberField._validate)
+
+        self.min_value = kwargs.get('min_value', float('-inf'))
+        self.max_value = kwargs.get('max_value', float('inf'))
+
+    def _validate(self, value):
+        """
+        Checks if a value is a number and is within the value constraints
+
+        :param value: value to validate
+        :return: success or failure as a tuple (status, message)
+        """
+        # Is value actually a number
+        if not isinstance(value, (int, float, complex)):
+            return self.failure('not a number')
+
+        # Does value lie within the value constraints
+        if self.min_value <= value <= self.max_value:
+            return self.success()
+
+        return self.failure('not within value bounds {mi} <= value <= {ma}'.format(
+            mi=self.min_value,
+            ma=self.max_value
         ))
 
 
@@ -181,20 +219,29 @@ class PhoneNumberField(StringField):
 
 
 class ImageField(StringField):
+    """
+    Image field currently works the same as string field, this class is a placeholder
+    for a future implementation that validates other image features such as resolution, etc.
+    """
     pass
 
 
 if __name__ == '__main__':
-    print(StringField('string', required=True).validate({'string': 'bob'}))
-    print(StringField('string', min_length=3, max_length=3, required=True).validate({'string': 'bob'}))
-    print(StringField('string', min_length=4, max_length=3, required=True).validate({'string': 'bob'}))
-    print(StringField('string', min_length=3, max_length=4, required=True).validate({'string': 'bob'}))
-    print(StringField('string', required=False).validate({'string2': 'bob'}))
-    print(EmailField('email', required=True).validate({'email': 'bob3f@bob'}))
-    print(EmailField('email', required=True).validate({'_email': 'bob3f@bob'}))
-    print(EmailField('email', required=True).validate({'email': 'bob3f^bob'}))
-    print(PhoneNumberField('phone', required=True).validate({'phone': '+442083661178'}))
-    print(PhoneNumberField('phone', required=True).validate({'phone': '442083661178'}))
-    print(PhoneNumberField('phone', required=True).validate({'phone': '(337)945-5244'}))
-    print(PhoneNumberField('phone', required=True).validate({'phone': '3379442213'}))
-    print(PhoneNumberField('phone', required=True).validate({'phone': '1234'}))
+    print(StringField('string', required=True).validate('bob'))
+    print(StringField('string', min_length=3, max_length=3, required=True).validate('bob'))
+    print(StringField('string', min_length=4, max_length=3, required=True).validate('bob'))
+    print(StringField('string', min_length=3, max_length=4, required=True).validate('bob'))
+    print(StringField('string', required=False).validate(None))
+    print(EmailField('email', required=True).validate('bob3f@bob'))
+    print(EmailField('email', required=True).validate(None))
+    print(EmailField('email', required=True).validate('bob3f^bob'))
+    print(PhoneNumberField('phone', required=True).validate('+442083661178'))
+    print(PhoneNumberField('phone', required=True).validate('442083661178'))
+    print(PhoneNumberField('phone', required=True).validate('(337)945-5244'))
+    print(PhoneNumberField('phone', required=True).validate('3379442213'))
+    print(PhoneNumberField('phone', required=True).validate('1234'))
+    print(NumberField('number', required=True).validate(4))
+    print(NumberField('number', required=True).validate('6'))
+    print(NumberField('number', required=True).validate(4.0))
+    print(NumberField('number', required=True, min_value=79).validate(78))
+    print(NumberField('number', required=True).validate(98e8))
