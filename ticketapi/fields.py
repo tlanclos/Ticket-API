@@ -14,10 +14,11 @@ class Field(object):
     :param name: name of the field located within validation data
     :param required: states whether or not the field is required in the validation data
     """
+    default_success_msg = 'Success'
+
     def __init__(self, name, required=True, **kwargs):
         self.name = name
         self.required = required
-        self.default_success_msg = 'Success'
         self.validators = [Field._validate]
 
     def success(self):
