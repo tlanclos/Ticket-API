@@ -28,6 +28,7 @@ pip3 install addict
 pip3 install Pillow
 pip3 install mod_wsgi
 pip3 install validate_email
+pip3 install phonenumbers
 ```
 
 ## Setup mod_wsgi
