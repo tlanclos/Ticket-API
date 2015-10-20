@@ -51,7 +51,7 @@ class Field(object):
         in self.validators and call them successively until one returns failure or
         all functions have been called
 
-        :param data: data to validate
+        :param value: data to validate
         :return: success or failure as a tuple (status, message)
         """
         # ensure the value exists if it is required
@@ -93,7 +93,7 @@ class StringField(Field):
         Validates a string by checking if the value is an instance of string class and
         that the length fits within the min and max lengths specified by the field
 
-        :param data: data to validate
+        :param value: value to validate
         :return: success or failure as a tuple (status, message)
         """
         if not isinstance(value, str):
@@ -106,3 +106,40 @@ class StringField(Field):
             mi=self.min_length,
             ma=self.max_length
         ))
+
+
+class EmailField(StringField):
+    """
+    Validates an email field according to RFC 2822
+
+    :param name: name of the field located within validation data
+    :param required: states whether or not the field is required in the validation data
+    :param min_length: minimum length of the string (should be left as default)
+    :param max_length: maximum length of the string (should be left as default)
+    """
+    def __init__(self, name, required=True, **kwargs):
+        super().__init__(name, required, **kwargs)
+        self.validators.append(EmailField._validate)
+
+    def _validate(self, value):
+        """
+        Validates an email address according to RFC 2822
+
+        :param value: value to validate
+        :return: success or failure as a tuple (status, message)
+        """
+        if not validate_email(value):
+            return self.failure('not a valid email address')
+
+        return self.success()
+
+
+if __name__ == '__main__':
+    print(StringField('string', required=True).validate({'string': 'bob'}))
+    print(StringField('string', min_length=3, max_length=3, required=True).validate({'string': 'bob'}))
+    print(StringField('string', min_length=4, max_length=3, required=True).validate({'string': 'bob'}))
+    print(StringField('string', min_length=3, max_length=4, required=True).validate({'string': 'bob'}))
+    print(StringField('string', required=False).validate({'string2': 'bob'}))
+    print(EmailField('test', required=True).validate({'test': 'bob3f@bob'}))
+    print(EmailField('test', required=True).validate({'test2': 'bob3f@bob'}))
+    print(EmailField('test', required=True).validate({'test': 'bob3f^bob'}))
