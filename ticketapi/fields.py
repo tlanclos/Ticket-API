@@ -136,17 +136,40 @@ class EmailField(StringField):
 
 
 class PhoneNumberField(StringField):
+    """
+    Validates phone numbers based on their country code, if a country code
+    is not entered, then the country code specified by default_country_code
+    is utilized.
+
+    :param name: name of the field located within validation data
+    :param required: states whether or not the field is required in the validation data
+    :param min_length: minimum length of the string (should be left as default)
+    :param max_length: maximum length of the string (should be left as default)
+    :param default_country_code: when a number does not have a country code, assume this one
+    """
     def __init__(self, name, required=True, **kwargs):
         super().__init__(name, required=required, **kwargs)
         self.validators.append(PhoneNumberField._validate)
 
+        self.default_country_code = kwargs.get('default_country_code', 1)
+
     def _validate(self, value):
+        """
+        Validate a phone number based on its country code or the default country code.
+
+        :param value: value to validate
+        :return: success or failure as a tuple (status, message)
+        """
+        # add the country code if one does not already exist
         value = value.strip()
         if not value.startswith('+'):
-            value = '+1' + value
+            value = '+' + str(self.default_country_code) + value
 
         try:
+            # parse the number into a number object (this should hopefully never fail but its possible)
             number = phonenumbers.parse(value)
+
+            # if the phone number is not a valid number based on the country code, then fail
             if not phonenumbers.is_valid_number(number):
                 return self.failure('phone number does not match valid pattern for country code {code}'.format(
                     code=number.country_code
@@ -167,6 +190,7 @@ if __name__ == '__main__':
     print(EmailField('email', required=True).validate({'_email': 'bob3f@bob'}))
     print(EmailField('email', required=True).validate({'email': 'bob3f^bob'}))
     print(PhoneNumberField('phone', required=True).validate({'phone': '+442083661178'}))
+    print(PhoneNumberField('phone', required=True).validate({'phone': '442083661178'}))
     print(PhoneNumberField('phone', required=True).validate({'phone': '(337)945-5244'}))
     print(PhoneNumberField('phone', required=True).validate({'phone': '3379442213'}))
     print(PhoneNumberField('phone', required=True).validate({'phone': '1234'}))
