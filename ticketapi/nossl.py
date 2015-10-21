@@ -1,6 +1,6 @@
 from flask import Flask
 
-__author__ = 'Taylor'
+__all__ = ['app']
 
 app = Flask(__name__)
 

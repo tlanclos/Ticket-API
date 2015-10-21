@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import request
 
+__all__ = ['app']
+
 app = Flask(__name__)
 
 
