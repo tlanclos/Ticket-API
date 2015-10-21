@@ -3,8 +3,12 @@ include ../vars.mk
 WSGI_CONFIGS += ticketapi.wsgi
 WSGI_CONFIGS += nossl.wsgi
 
-APPLICATIONS += ticketapi.py
-APPLICATIONS += nossl.py
+SOURCE += ticketapi.py
+SOURCE += nossl.py
+SOURCE += response.py
+SOURCE += fields.py
+SOURCE += validators.py
+SOURCE += __init__.py
 
 build:
 	@echo "Not implemented yet"
@@ -18,7 +22,7 @@ server-root:
 wsgi-config: $(WSGI_CONFIGS)
 	@install -v -m $(SERVER_BIN_CHMOD) $(SERVER_INSTALL_FLAGS) $^ $(SERVER_ROOT)/.
 
-application: $(APPLICATIONS)
+application: $(SOURCE)
 	@install -v -m $(SERVER_BIN_CHMOD) $(SERVER_INSTALL_FLAGS) $^ $(SERVER_ROOT)/.
 
 clean:
