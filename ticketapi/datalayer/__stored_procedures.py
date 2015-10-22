@@ -1,5 +1,5 @@
 from __session_wrapper import *
-from __sql_model import db, Company, Session, Ticket
+from models import db, Company, Session, Ticket
 from uuid import uuid4
 from datetime import datetime
 
