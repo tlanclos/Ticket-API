@@ -22,6 +22,7 @@ apt-get install htop
 ```
 pip3 install flask
 pip3 install flask-restful
+pip3 install flask-sqlalchemy
 pip3 install pymssql
 pip3 install sqlalchemy
 pip3 install addict
