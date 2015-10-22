@@ -1,9 +1,11 @@
 import json
 from flask import make_response
 
+
 class FailureResponse(object):
     error_code = ''
     payload = {}
+
     def __init__(self, error_code, nice_message, debug_message, traceback_string):
         self.payload['error_code'] = error_code
         self.payload['nice_message'] = nice_message
