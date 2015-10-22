@@ -43,6 +43,17 @@ def update_employee(**kwargs):
     else:
         return False
 
+def check_auth(**kwargs):
+    if 'authKey' in kwargs:
+        with DB() as s:
+            employee = s.query(Session.authKey).filter(Session.authKey == kwargs['authKey']).first()
+            if employee is not None:
+                return True
+            else:
+                return False
+    else:
+        return False
+
 
 def submit_ticket(**kwargs):
     if 'authKey' in kwargs and 'description' in kwargs:
