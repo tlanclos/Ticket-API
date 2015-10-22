@@ -1,4 +1,4 @@
-from __session_wrapper import *
+from wrapper import *
 from models import db, Company, Session, Ticket
 from uuid import uuid4
 from datetime import datetime
