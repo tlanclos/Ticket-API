@@ -25,4 +25,5 @@ class Validator(object):
         except:
             return FailureResponse()
 
-class EmployeeInfroValidator(Validator):
+class EmployeeInfoValidator(Validator):
+    pass
