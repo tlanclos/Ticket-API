@@ -1,15 +1,15 @@
-from flask import Flask
-
-__all__ = ['app']
-
-app = Flask(__name__)
+from ticketapi.apps import app
 
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>/', strict_slashes=False)
 def nossl(path):
-    return 'We are unable to process your request as this connection is not secured via SSL'
+    """
+    Return a message stating that we are unable to serve the client because they are not secured via SSL
 
-
-if __name__ == '__main__':
-    app.run(port=5080)
+    :param path: path that the client navigated to
+    :return: a message stating that we are unable to serve the client because they are not secured via SSL
+    """
+    return 'We are unable to process your request to {path} as this connection is not secured via SSL'.format(
+        path=path
+    )
