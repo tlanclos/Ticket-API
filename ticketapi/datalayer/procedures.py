@@ -6,7 +6,7 @@ from uuid import uuid4
 from datetime import datetime
 
 
-__all__ = ['authenticate', 'update_employee', 'submit_ticket']
+__all__ = ['authenticate', 'update_employee', 'submit_ticket', 'check_auth']
 
 
 def authenticate(**kwargs):
