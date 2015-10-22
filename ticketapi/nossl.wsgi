@@ -1,4 +1,4 @@
 import sys
 sys.path.insert(0, '/var/www/html/ticketapi')
 
-from nossl import app as application
+from apps.nossl import app as application
