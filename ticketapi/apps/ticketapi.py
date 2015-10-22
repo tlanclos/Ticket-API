@@ -1,9 +1,5 @@
-from flask import Flask
 from flask import request
-
-__all__ = ['app']
-
-app = Flask(__name__)
+from ticketapi.apps import app
 
 
 @app.route('/')
@@ -40,7 +36,3 @@ def submit_ticket():
     :return:
     """
     return 'Ticket-API submit-ticket URI {data}'.format(data=request.data)
-
-
-if __name__ == '__main__':
-    app.run(port=5443)
