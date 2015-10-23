@@ -3,14 +3,14 @@ from flask import make_response
 
 
 class FailureResponse(object):
-    error_code = ''
+    error_code = 200
     payload = {}
 
     def __init__(self, error_code, nice_message, debug_message, traceback_string):
-        self.payload['error_code'] = error_code
-        self.payload['nice_message'] = nice_message
-        self.payload['debug_message'] = debug_message
-        self.payload['traceback_string'] = traceback_string
+        self.error_code = error_code
+        self.payload['niceMessage'] = nice_message
+        self.payload['debugMessage'] = debug_message
+        self.payload['traceback'] = traceback_string
 
     def as_json(self):
         return json.dumps(self.payload)
