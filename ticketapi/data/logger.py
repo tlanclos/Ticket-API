@@ -1,7 +1,6 @@
-__all__ = ['logger']
-
 import logging.config
 
+__all__ = ['logger']
 
 log_settings = {
     'version': 1,
@@ -18,7 +17,7 @@ log_settings = {
             'formatter': 'detailed',
             'filename': 'ticket_API.log',
             'mode': 'a',
-            'maxBytes': 25600,
+            'maxBytes': 2621440,
             'backupCount': 9,
         },
 
