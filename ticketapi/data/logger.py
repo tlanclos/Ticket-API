@@ -1,3 +1,4 @@
+import logging
 import logging.config
 
 __all__ = ['logger']
@@ -15,7 +16,7 @@ log_settings = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'detailed',
-            'filename': 'ticket_API.log',
+            'filename': 'ticket-api.log',
             'mode': 'a',
             'maxBytes': 2621440,
             'backupCount': 9,
@@ -36,10 +37,6 @@ logging.config.dictConfig(log_settings)
 logger = logging.getLogger('API-basic')
 
 
-"""def main():
+if __name__ == '__main__':
     for i in range(50):
-        logger.info("test" + str(i))
-
-
-if __name__ == "__main__":
-    main()"""
+        logger.info('test' + str(i))
