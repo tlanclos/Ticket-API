@@ -43,7 +43,7 @@ def send_request(uri, payload):
     :param payload: payload to send with the url
     :return:
     """
-    response = requests.post(url=uri, data=json.dumps(payload), allow_redirects=False)
+    response = requests.post(url=uri, data=json.dumps(payload), allow_redirects=False, verify=False)
     print('Response Code:', response.status_code)
     print('Response Reason:', response.reason)
     print('==== BODY ====')

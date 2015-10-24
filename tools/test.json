@@ -1,0 +1,7 @@
+{
+  "uri": "https://cmps.techneaux.com/login",
+  "payload": {
+    "companyID": "Techneaux",
+    "password": "superstrongsecurepassword"
+  }
+}
