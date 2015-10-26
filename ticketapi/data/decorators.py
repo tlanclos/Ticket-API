@@ -60,8 +60,7 @@ def requires_auth():
                 return FailureResponse(
                     error_code=401,
                     debug_message='JSON was missing authentication key',
-                    nice_message='There was an error authenticating you with the server',
-                    traceback=traceback.format_exc()
+                    nice_message='There was an error authenticating you with the server'
                 ).response()
 
             # check authentication
@@ -71,8 +70,7 @@ def requires_auth():
                 return FailureResponse(
                     error_code=401,
                     debug_message='Authentication key is invalid',
-                    nice_message='There was an error authenticating you with the server',
-                    traceback=traceback.format_exc()
+                    nice_message='There was an error authenticating you with the server'
                 ).response()
 
         return view_wrapper

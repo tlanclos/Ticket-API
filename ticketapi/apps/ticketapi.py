@@ -4,7 +4,8 @@ from ticketapi.data.decorators import *
 from ticketapi.data.validators import *
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
+@requires_auth()
 @requires_validation(EmployeeInfoValidator)
 def home():
     """

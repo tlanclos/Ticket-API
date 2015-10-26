@@ -35,8 +35,7 @@ class Validator(object):
                     return FailureResponse(
                         error_code=400,
                         debug_message='Field %s is invalid: %s'.format(field.name, field_valid[1]),
-                        nice_message='Field %s is invalid'.format(field.name),
-                        traceback=traceback.format_exc()
+                        nice_message='Field %s is invalid'.format(field.name)
                     )
 
         except:
