@@ -1,8 +1,11 @@
 from flask import request
 from ticketapi.apps import app
+from ticketapi.data.decorators import *
+from ticketapi.data.validators import *
 
 
 @app.route('/')
+@requires_validation(EmployeeInfoValidator)
 def home():
     """
     Home page

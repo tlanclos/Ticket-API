@@ -1,10 +1,11 @@
-import json
+import traceback
 from ticketapi.data.fields import *
 from ticketapi.data.response import *
 from werkzeug.exceptions import BadRequest
 
 __all__ = [
-    'Validator'
+    'Validator',
+    'EmployeeInfoValidator'
 ]
 
 
@@ -17,14 +18,33 @@ class Validator(object):
 
     def validate(self):
         try:
-            self.current_request.get_json(force=True)
+            try:
+                # make Flask decode JSON regardless of content type header
+                data = self.current_request.get_json(force=True)
+            except BadRequest:
+                return FailureResponse(
+                    error_code=,
+                    debug_message=,
+                    nice_message=,
+                    traceback=
+                )
 
             for i in self.fields:
-                if False in i.validate(self.current_request.get(i.name)):
-                    return FailureResponse()
+                if False in i.validate(data.get(i.name)):
+                    return FailureResponse(
+                        error_code=,
+                        debug_message=,
+                        nice_message=,
+                        traceback=
+                    )
 
-        except BadRequest:
-            return FailureResponse()
+        except:
+            return FailureResponse(
+                error_code=,
+                debug_message=,
+                nice_message=,
+                traceback=
+            )
 
 
 class AuthInfoValidator(Validator):
@@ -51,5 +71,3 @@ class TicketInfoValidator(Validator):
         ImageField('photo', required=False),
         StringField('auth key', required=True)
     ]
-
-
