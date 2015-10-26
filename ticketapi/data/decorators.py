@@ -42,6 +42,7 @@ def requires_auth():
     """
     def decorator(view):
         def view_wrapper(*args, **kwargs):
+            nice_msg = 'There was an error authenticating you with the server'
 
             # parse JSON
             try:
@@ -50,8 +51,7 @@ def requires_auth():
                 return FailureResponse(
                     error_code=400,
                     debug_message='Request body could not be parsed as JSON',
-                    nice_message='There was an error authenticating you with the server',
-                    traceback=traceback.format_exc()
+                    nice_message=nice_msg
                 ).response()
 
             # test whether auth key is in JSON
@@ -60,17 +60,24 @@ def requires_auth():
                 return FailureResponse(
                     error_code=401,
                     debug_message='JSON was missing authentication key',
-                    nice_message='There was an error authenticating you with the server'
+                    nice_message=nice_msg
                 ).response()
 
-            # check authentication
-            if check_auth(authKey=auth_key):
-                return view(*args, **kwargs)
-            else:
+            try:
+                # check authentication
+                if check_auth(authKey=auth_key):
+                    return view(*args, **kwargs)
+                else:
+                    return FailureResponse(
+                        error_code=401,
+                        debug_message='Authentication key is invalid',
+                        nice_message=nice_msg
+                    ).response()
+            except:
                 return FailureResponse(
-                    error_code=401,
-                    debug_message='Authentication key is invalid',
-                    nice_message='There was an error authenticating you with the server'
+                    error_code=500,
+                    debug_message='Exception occurred when querying database.  Maybe the db is down',
+                    nice_message=nice_msg
                 ).response()
 
         return view_wrapper
