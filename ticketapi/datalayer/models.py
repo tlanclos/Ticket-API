@@ -5,7 +5,7 @@ from ticketapi.apps import app
 __all__ = ['Company', 'Session', 'Ticket']
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlalchemy_example.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///var\\www\\html\\ticketapi\\datalayer\\temp_db.db'
 db = SQLAlchemy(app)
 
 
