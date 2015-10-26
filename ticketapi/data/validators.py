@@ -23,27 +23,28 @@ class Validator(object):
                 data = self.current_request.get_json(force=True)
             except BadRequest:
                 return FailureResponse(
-                    error_code=,
-                    debug_message=,
-                    nice_message=,
-                    traceback=
+                    error_code=400,
+                    debug_message='Request body is not valid JSON',
+                    nice_message='Something went wrong while performing the operation',
+                    traceback=traceback.format_exc()
                 )
 
-            for i in self.fields:
-                if False in i.validate(data.get(i.name)):
+            for field in self.fields:
+                field_valid = field.validate(data.get(field.name))
+                if not field_valid[0]:
                     return FailureResponse(
-                        error_code=,
-                        debug_message=,
-                        nice_message=,
-                        traceback=
+                        error_code=400,
+                        debug_message='Field %s is invalid: %s'.format(field.name, field_valid[1]),
+                        nice_message='Field %s is invalid'.format(field.name),
+                        traceback=traceback.format_exc()
                     )
 
         except:
             return FailureResponse(
-                error_code=,
-                debug_message=,
-                nice_message=,
-                traceback=
+                error_code=400,
+                debug_message='An exception occurred during validation, see traceback',
+                nice_message='Something went wrong while performing the operation',
+                traceback=traceback.format_exc()
             )
 
 
