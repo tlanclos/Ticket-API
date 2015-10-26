@@ -26,7 +26,6 @@ class Validator(object):
                     error_code=400,
                     debug_message='Request body is not valid JSON',
                     nice_message='Something went wrong while performing the operation',
-                    traceback=traceback.format_exc()
                 )
 
             for field in self.fields:
@@ -40,7 +39,7 @@ class Validator(object):
 
         except:
             return FailureResponse(
-                error_code=400,
+                error_code=500,
                 debug_message='An exception occurred during validation, see traceback',
                 nice_message='Something went wrong while performing the operation',
                 traceback=traceback.format_exc()
