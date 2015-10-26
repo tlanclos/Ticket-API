@@ -1,6 +1,7 @@
 import json
 from ticketapi.data.fields import *
 from ticketapi.data.response import *
+from werkzeug.exceptions import BadRequest
 
 __all__ = [
     'Validator'
@@ -14,39 +15,41 @@ class Validator(object):
     def __init__(self, current_request):
         self.current_request = current_request
 
-    def validate(self, string_data):
+    def validate(self):
         try:
-            data = json.loads(string_data)
+            self.current_request.get_json(force=True)
 
             for i in self.fields:
-                if False in i.validate(data.get(i.name)):
+                if False in i.validate(self.current_request.get(i.name)):
                     return FailureResponse()
 
-        except:
+        except BadRequest:
             return FailureResponse()
 
 
 class AuthInfoValidator(Validator):
-
-    def __init__(self, company_id, password):
-        self.fields.append(StringField(company_id, True, max_length=64))
-        self.fields.append(StringField(password, True, max_length=16))
+    fields = [
+        StringField('companyID', required=True, max_length=64),
+        StringField('password', required=True, max_length=16)
+    ]
 
 
 class EmployeeInfoValidator(Validator):
-    def __init__(self, first_name, last_name, email, phone_number, auth_key):
-        self.fields.append(StringField(first_name, False, max_length=32))
-        self.fields.append(StringField(last_name, False, max_length=32))
-        self.fields.append(EmailField(email, False, max_length=64))
-        self.fields.append(PhoneNumberField(phone_number, False, max_length=32))
-        self.fields.append(StringField(auth_key, True))
+    fields = [
+       StringField('first name', required=False, max_length=32),
+       StringField('last name', required=False, max_length=32),
+       EmailField('email', required=False, max_length=64),
+       PhoneNumberField('phone number', required=False, max_length=32),
+       StringField('auth key', required=True)
+   ]
 
 
 class TicketInfoValidator(Validator):
-    def __init__(self, location, description, photo, auth_key):
-        self.fields.append(StringField(location, max_length=64))
-        self.fields.append(StringField(description, True, max_length=1024))
-        self.fields.append(ImageField(photo, False))
-        self.fields.append(StringField(auth_key, True))
+    fields = [
+        StringField('location', max_length=64),
+        StringField('description', required=True, max_length=1024),
+        ImageField('photo', required=False),
+        StringField('auth key', required=True)
+    ]
 
 
