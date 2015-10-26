@@ -55,12 +55,12 @@ class AuthInfoValidator(Validator):
 
 class EmployeeInfoValidator(Validator):
     fields = [
-       StringField('first name', required=False, max_length=32),
-       StringField('last name', required=False, max_length=32),
-       EmailField('email', required=False, max_length=64),
-       PhoneNumberField('phone number', required=False, max_length=32),
-       StringField('auth key', required=True)
-   ]
+        StringField('first name', required=False, max_length=32),
+        StringField('last name', required=False, max_length=32),
+        EmailField('email', required=False, max_length=64),
+        PhoneNumberField('phone number', required=False, max_length=32),
+        StringField('auth key', required=True)
+    ]
 
 
 class TicketInfoValidator(Validator):
