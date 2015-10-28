@@ -1,8 +1,10 @@
 from flask import request
 from ticketapi.apps import app
+from ticketapi.data.decorators import *
+from ticketapi.data.validators import *
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     """
     Home page
