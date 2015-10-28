@@ -15,6 +15,7 @@ apt-get install libpng3
 apt-get install libpng-dev
 apt-get install libz-dev
 apt-get install htop
+apt-get install unixodbc-dev
 ```
 
 ## Install python libraries
@@ -30,6 +31,7 @@ pip3 install Pillow
 pip3 install mod_wsgi
 pip3 install validate_email
 pip3 install phonenumbers
+pip3 install pyodbc
 ```
 
 ## Setup mod_wsgi
