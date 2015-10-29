@@ -5,11 +5,20 @@ from werkzeug.exceptions import BadRequest
 
 __all__ = [
     'Validator',
-    'EmployeeInfoValidator'
+    'EmployeeInfoValidator',
+    'AuthInfoValidator',
+    'TicketInfoValidator'
 ]
 
 
 class Validator(object):
+    """
+    Base validator class that validates the 'current_request' given. When inheriting this class
+    each concrete validator should override the 'fields' attribute with a list of
+    concrete data to be validated.
+
+    :param current_request: request that needs to be validated
+    """
 
     fields = []
 
@@ -17,6 +26,13 @@ class Validator(object):
         self.current_request = current_request
 
     def validate(self):
+        """
+        Validate function that checks to make sure 'current_request' is in correct
+        JSON syntax. If syntax is correct JSON, 'current_request' is checked to make sure that
+        each required field is present.
+
+        :return: FailureResponse object containing data associated with it's failure.
+        """
         try:
             try:
                 # make Flask decode JSON regardless of content type header
@@ -47,6 +63,10 @@ class Validator(object):
 
 
 class AuthInfoValidator(Validator):
+    """
+    Overrides the 'fields' attribute with the concrete data to be validated.
+    In this case, 'fields' is re-defined to have two 'StringField's.
+    """
     fields = [
         StringField('companyID', required=True, max_length=64),
         StringField('password', required=True, max_length=16)
@@ -54,19 +74,31 @@ class AuthInfoValidator(Validator):
 
 
 class EmployeeInfoValidator(Validator):
+    """
+    Overrides the 'fields' attribute with the concrete data to be validated.
+    In this case, 'fields' is re-defined to have three 'StringField(s)', an
+    'EmailField', and a 'PhoneNumberField'.
+    """
     fields = [
-        StringField('first name', required=False, max_length=32),
-        StringField('last name', required=False, max_length=32),
-        EmailField('email', required=False, max_length=64),
-        PhoneNumberField('phone number', required=False, max_length=32),
-        StringField('auth key', required=True)
-    ]
+       StringField('firstName', required=False, max_length=32),
+       StringField('lastName', required=False, max_length=32),
+       EmailField('email', required=False, max_length=64),
+       PhoneNumberField('phoneNumber', required=False, max_length=32),
+       StringField('authKey', required=True)
+   ]
 
 
 class TicketInfoValidator(Validator):
+    """
+    Overrides the 'fields' attribute with the concrete data to be validated.
+    In this case, 'fields' is re-defined to have three 'StringField(s)' and
+    and 'ImageField'.
+    """
     fields = [
         StringField('location', max_length=64),
         StringField('description', required=True, max_length=1024),
         ImageField('photo', required=False),
-        StringField('auth key', required=True)
+        StringField('authKey', required=True)
     ]
+
+
