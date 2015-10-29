@@ -43,6 +43,7 @@ def update_employee(**kwargs):
     else:
         return False
 
+
 def check_auth(**kwargs):
     if 'authKey' in kwargs:
         with DB() as s:

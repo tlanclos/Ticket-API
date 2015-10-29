@@ -1,12 +1,10 @@
-import json
-import traceback
-from flask import make_response
 from flask import request
 from ticketapi.data.response import FailureResponse
 from ticketapi.datalayer.procedures import check_auth
 from werkzeug.exceptions import BadRequest
 
 __all__ = ['requires_validation', 'requires_auth']
+
 
 def requires_validation(validator):
     """

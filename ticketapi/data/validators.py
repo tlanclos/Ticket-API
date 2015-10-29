@@ -52,7 +52,6 @@ class Validator(object):
                         debug_message='Field %s is invalid: %s'.format(field.name, field_valid[1]),
                         nice_message='Field %s is invalid'.format(field.name)
                     )
-
         except:
             return FailureResponse(
                 error_code=520,
@@ -85,7 +84,7 @@ class EmployeeInfoValidator(Validator):
        EmailField('email', required=False, max_length=64),
        PhoneNumberField('phoneNumber', required=False, max_length=32),
        StringField('authKey', required=True)
-   ]
+    ]
 
 
 class TicketInfoValidator(Validator):
@@ -100,5 +99,3 @@ class TicketInfoValidator(Validator):
         ImageField('photo', required=False),
         StringField('authKey', required=True)
     ]
-
-
