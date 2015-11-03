@@ -20,11 +20,13 @@
 │   │   ├── nossl.py
 │   │   └── ticketapi.py
 │   ├── data
+│   │   ├── crypt.py
 │   │   ├── decorators.py
 │   │   ├── fields.py
 │   │   ├── __init__.py
 │   │   ├── logger.py
 │   │   ├── response.py
+│   │   ├── test-pepper.json
 │   │   └── validators.py
 │   ├── datalayer
 │   │   ├── __init__.py
@@ -73,6 +75,7 @@
 >   - `procedures.py` - any procedure that is associated with functionality of a mapping between API and the database is located here
 >   - `wrapper.py` - contains a simple database session wrapper that may be used to grab the database session and query the database
 > - `data/` - this directory contains all the basic data handling objects
+>   - `crypt.py` - library that will contain all cryptographic functionality required to encrypt and test passwords
 >   - `decorators.py` - any decorator that may be used to decorate a function for validation, authentication, etc. is located here
 >   - `fields.py` - this file contains the field types that may be used to validate a request field via the validators classes
 >   - `logger.py` - contains the global logger that will be used to log anything
