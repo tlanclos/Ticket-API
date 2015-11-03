@@ -42,6 +42,6 @@ class Ticket(db.Model):
     ticketID = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(1024), unique=False, nullable=False)
     location = db.Column(db.String(64), unique=False, nullable=True)
-    photo = db.Column(db.String(1024), unique=False, nullable=True)
+    photo = db.Column(db.Text, unique=False, nullable=True)
     creationTime = db.Column(db.DateTime, unique=False, nullable=False)
     authKey = db.Column(db.String(36), db.ForeignKey('session.authKey'))
