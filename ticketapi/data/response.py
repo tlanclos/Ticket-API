@@ -15,13 +15,11 @@ class FailureResponse(object):
     error_code = 200
     payload = {}
 
-    def __init__(self, error_code, nice_message, debug_message, traceback=None):
+    def __init__(self, error_code, nice_message, debug_message):
         self.error_code = error_code
         self.payload['niceMessage'] = nice_message
         self.payload['debugMessage'] = debug_message
         logger.error(debug_message)
-        if traceback is not None:
-            self.payload['traceback'] = traceback
 
     def as_json(self):
         """

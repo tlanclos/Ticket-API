@@ -57,7 +57,6 @@ class Validator(object):
                 error_code=520,
                 debug_message='An exception occurred during validation, see traceback',
                 nice_message='Something went wrong while performing the operation',
-                traceback=traceback.format_exc()
             )
 
 
