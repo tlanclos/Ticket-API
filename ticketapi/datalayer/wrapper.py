@@ -1,4 +1,5 @@
 from ticketapi.datalayer.models import db
+from ticketapi.data.logger import logger
 
 
 __all__ = ['DB']
@@ -31,6 +32,7 @@ class DB(object):
         if exc_type is not None:
             # If we got an exception, we will rollback any changes. This is used as enforcement
             # for, if used correctly, will guarantee that bad data does not get inserted into the database
+            logger.error('An exception was caught while querying the database, rolling back any changes')
             db.session.rollback()
             return False
         else:
