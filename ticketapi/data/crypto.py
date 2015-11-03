@@ -7,7 +7,6 @@ __all__ = ['crypto']
 
 class CryptoConsts:
     PEPPER_FILE = 'test-pepper.json'  # location of JSON pepper file
-    MAX_SCRYPT_TIME = 7  # maximum encrypt and decrypt time in seconds
     HASH_BYTES = 128  # number of bytes for hash
     SALT_BYTES = 128  # number of bytes for salt
 
