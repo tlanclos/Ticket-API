@@ -1,8 +1,17 @@
 import json
 from flask import make_response
+from ticketapi.data.logger import logger
 
 
 class FailureResponse(object):
+    """
+    Failure response contains methods appropriate for creating a standard failure
+    response that may be returned when a failure is encountered.
+
+    :param error_code: error code associated with this failure response
+    :param nice_message: message that may be displayed to the user if necessary
+    :param debug_message: message that should not be displayed to the user, but may be used for bug reports
+    """
     error_code = 200
     payload = {}
 
@@ -10,20 +19,24 @@ class FailureResponse(object):
         self.error_code = error_code
         self.payload['niceMessage'] = nice_message
         self.payload['debugMessage'] = debug_message
+        logger.error(debug_message)
         if traceback is not None:
             self.payload['traceback'] = traceback
 
     def as_json(self):
+        """
+        Create a JSON string representation of the payload
+
+        :return: JSON string representation of the payload
+        """
         return json.dumps(self.payload)
 
     def response(self):
+        """
+        Create a flask response object. This object can be returned by a flask routed function in order
+        to respond to a request. This is the method that may be used to standardize failure responses from
+        this API
+
+        :return: Flask response
+        """
         return make_response(self.as_json(), self.error_code)
-
-
-#FailureResponse must take in an error_code, nice_message, debug_message, and a traceback string in its __init__ method.
-#
-#FailureResponse must implement a method called as_json() which will convert the provided data into json via the json.dumps() method.
-#
-#FailureResponse must, lastly, implement a method called response() which will return flask's make_response(self.as_json(), self.error_code). If possible, this function may also take in a headers dictionary and update the response headers before returning it.
-#
-#FailureResponse must also implement logging on a call to response().

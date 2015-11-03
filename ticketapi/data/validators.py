@@ -45,11 +45,11 @@ class Validator(object):
                 )
 
             for field in self.fields:
-                field_valid = field.validate(data.get(field.name))
-                if not field_valid[0]:
+                success, reason = field.validate(data.get(field.name))
+                if not success:
                     return FailureResponse(
                         error_code=400,
-                        debug_message='Field %s is invalid: %s'.format(field.name, field_valid[1]),
+                        debug_message='Field %s is invalid: %s'.format(field.name, reason),
                         nice_message='Field %s is invalid'.format(field.name)
                     )
         except:

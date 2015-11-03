@@ -2,6 +2,7 @@ from ticketapi.datalayer.wrapper import *
 from ticketapi.datalayer.models import Company
 from ticketapi.datalayer.models import Session
 from ticketapi.datalayer.models import Ticket
+from ticketapi.data.logger import logger
 from uuid import uuid4
 from datetime import datetime
 
@@ -40,9 +41,14 @@ def authenticate(**kwargs):
 
                 # And return the authorization key
                 return new_session.authKey
-
-    # Everything failed and we do not have a success state that returned
-    return False
+            else:
+                logger.error('Unable to authorize the company {company}, check credentials'.format(
+                    company=kwargs.get('companyID')
+                ))
+                return False
+    else:
+        logger.error('companyID and password must be provided to the authenticate method')
+        return False
 
 
 def update_employee(**kwargs):
@@ -70,9 +76,12 @@ def update_employee(**kwargs):
                 employee.email = kwargs.get('email')
                 employee.phoneNumber = kwargs.get('phoneNumber')
                 return True
-
-    # Everything failed and we do not have a success state that returned
-    return False
+            else:
+                logger.error('Unable to find an employee associated with the provided authentication key')
+                return False
+    else:
+        logger.error('authKey must be provided for the update_employee method')
+        return False
 
 
 def check_auth(**kwargs):
@@ -86,15 +95,17 @@ def check_auth(**kwargs):
     """
     if 'authKey' in kwargs:
         with DB() as s:
-            # Attempt to get an employee associated with the auth key
-            employee = s.query(Session.authKey).filter(Session.authKey == kwargs['authKey']).first()
+            # Attempt to get an session associated with the auth key
+            the_session = s.query(Session.authKey).filter(Session.authKey == kwargs['authKey']).first()
 
-            # If we have a valid employee, then they key has been authorized
-            if employee is not None:
+            # If we have a valid session, then they key has been authorized
+            if the_session is not None:
                 return True
-
-    # Everything failed and we do not have a success state that returned
-    return False
+            else:
+                logger.error('Unable to find a session associated with the provided authentication key')
+    else:
+        logger.error('authKey must be provided for the check_auth method')
+        return False
 
 
 def submit_ticket(**kwargs):
@@ -130,6 +141,9 @@ def submit_ticket(**kwargs):
 
                 # We have successfully add a ticket to the database
                 return True
-
-    # Everything failed and we do not have a success state that returned
-    return False
+            else:
+                logger.error('Unable to find a session associated with the provided authentication key')
+                return False
+    else:
+        logger.error('authKey and description must be provided for the submit_ticket method')
+        return False
