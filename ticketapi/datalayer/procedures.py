@@ -127,7 +127,7 @@ def submit_ticket(**kwargs):
                     session=the_session
                 )
                 s.add(new_ticket)
-                
+
                 # We have successfully add a ticket to the database
                 return True
 
