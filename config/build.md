@@ -32,6 +32,7 @@ pip3 install mod_wsgi
 pip3 install validate_email
 pip3 install phonenumbers
 pip3 install pyodbc
+pip3 install scrypt
 ```
 
 ## Setup mod_wsgi
