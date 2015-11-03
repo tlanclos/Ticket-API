@@ -2,17 +2,17 @@ import os
 import scrypt
 import json
 
-__all__ = ['crypt']
+__all__ = ['crypto']
 
 
-class CryptConsts:
+class CryptoConsts:
     PEPPER_FILE = 'test-pepper.json'  # location of JSON pepper file
     MAX_SCRYPT_TIME = 7  # maximum encrypt and decrypt time in seconds
     HASH_BYTES = 128  # number of bytes for hash
     SALT_BYTES = 128  # number of bytes for salt
 
 
-class CryptError(Exception):
+class CryptoError(Exception):
     def __init__(self, msg):
         self.msg = msg
 
@@ -20,7 +20,7 @@ class CryptError(Exception):
         return repr(self.msg)
 
 
-class Crypt:
+class Crypto:
     """
     Provides wrappers for scrypt that help in hashing and checking passwords with salt and pepper
     """
@@ -29,14 +29,14 @@ class Crypt:
         """
         Loads pepper from filesystem
         """
-        self.__load_pepper(CryptConsts.PEPPER_FILE)
+        self.__load_pepper(CryptoConsts.PEPPER_FILE)
 
     @staticmethod
     def __get_salt():
         """
         :return: SALT_BYTES number of random bytes suitable for cryptographic use
         """
-        return os.urandom(CryptConsts.SALT_BYTES)
+        return os.urandom(CryptoConsts.SALT_BYTES)
 
     def __load_pepper(self, file_loc):
         """
@@ -49,14 +49,14 @@ class Crypt:
                 try:
                     pepper = json.loads(pepper_file.read()).get('pepper')
                 except ValueError:
-                    raise CryptError('Error initializing Crypt')
+                    raise CryptoError('Error initializing Crypt')
                 else:
                     if not pepper:
-                        raise CryptError('Error initializing Crypt')
+                        raise CryptoError('Error initializing Crypt')
                     else:
                         self.pepper = bytes(pepper, encoding='utf8')
         except Exception:
-            raise CryptError('Error initializing Crypt')
+            raise CryptoError('Error initializing Crypt')
 
     def check(self, test_pw, hashed_pw, salt):
         """
@@ -67,7 +67,7 @@ class Crypt:
         :return: whether test_pw matches hashed_pw when hashed with salt
         """
         try:
-            test_hashed = scrypt.hash(test_pw, salt + self.pepper, buflen=CryptConsts.HASH_BYTES)
+            test_hashed = scrypt.hash(test_pw, salt + self.pepper, buflen=CryptoConsts.HASH_BYTES)
             return test_hashed == hashed_pw
         except scrypt.error:
             return False
@@ -81,18 +81,18 @@ class Crypt:
         try:
             salt = self.__get_salt()
         except NotImplementedError:
-            raise CryptError('Could not encrypt password')
+            raise CryptoError('Could not encrypt password')
 
-        hashed = scrypt.hash(password, salt + self.pepper, buflen=CryptConsts.HASH_BYTES)
+        hashed = scrypt.hash(password, salt + self.pepper, buflen=CryptoConsts.HASH_BYTES)
 
         return hashed, salt
 
 
-crypt = Crypt()
+crypto = Crypto()
 
 if __name__ == '__main__':
-    hashed, salt = crypt.hash('hereismypassword')
+    hashed, salt = crypto.hash('hereismypassword')
     print(hashed)
     print(salt)
-    is_correct = crypt.check('hereismypassword', hashed, salt)
+    is_correct = crypto.check('hereismypassword', hashed, salt)
     print(is_correct)
