@@ -32,7 +32,7 @@ def login():
             error_code=408,
             nice_message='There was an error authenticating you with the server',
             debug_message='An exception occurred while trying to query the database'
-        )
+        ).response()
 
     if result is False:
         return FailureResponse(

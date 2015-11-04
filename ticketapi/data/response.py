@@ -1,5 +1,5 @@
 import json
-from flask import make_response
+from flask import Response
 from ticketapi.data.logger import logger
 
 
@@ -37,4 +37,4 @@ class FailureResponse(object):
 
         :return: Flask response
         """
-        return make_response(self.as_json(), self.error_code)
+        return Response(response=self.as_json(), status=self.error_code, mimetype='application/json')
