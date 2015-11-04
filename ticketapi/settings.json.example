@@ -1,0 +1,7 @@
+{
+  "pepper": "!!1thisismypepper1!!",
+  "db_name": "database_name",
+  "db_server": "my.server.database.internet",
+  "db_username": "my_user",
+  "db_password": "thisismydatabasepassword"
+}
