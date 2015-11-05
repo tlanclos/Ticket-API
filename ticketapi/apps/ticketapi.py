@@ -41,19 +41,20 @@ def update_employee():
         
     except RequestTimeout:
         return FailureResponse(
-            nice_message='Some Nice Message',
-            debug_message='More detailed message',
+            nice_message='ERROR 408 Request Timeout',
+            debug_message='The database server is not responding or is down.',
             error_code=408
         ).response()
 
     if result is False:
         return FailureResponse(
-            nice_message='Some Nice Message',
-            debug_message='More detailed message',
+            nice_message='ERROR 401 Unauthorized',
+            debug_message='Session ID not found.',
             error_code=401
         ).response()
 
-    return jsonify(authKey=result)
+    else:
+        return jsonify({})
 
 
 @app.route('/submit-ticket/', methods=['POST'], strict_slashes=False)
