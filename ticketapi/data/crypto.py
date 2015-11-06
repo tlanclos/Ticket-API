@@ -90,8 +90,10 @@ class Crypto:
 crypto = Crypto()
 
 if __name__ == '__main__':
-    hashed, salt = crypto.hash('hereismypassword')
-    print(hashed)
-    print(salt)
-    is_correct = crypto.check('hereismypassword', hashed, salt)
+    hashed_value, salt_value = crypto.hash('hereismypassword')
+    print(hashed_value)
+    print(len(hashed_value))
+    print(salt_value)
+    print(len(salt_value))
+    is_correct = crypto.check('hereismypassword', hashed_value, salt_value)
     print(is_correct)
