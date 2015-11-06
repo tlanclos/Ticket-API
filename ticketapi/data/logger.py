@@ -16,7 +16,7 @@ log_settings = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'detailed',
-            'filename': 'ticket-api.log',
+            'filename': '/var/log/ticket-api/ticket-api.log',
             'mode': 'a',
             'maxBytes': 2621440,
             'backupCount': 9,
