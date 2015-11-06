@@ -1,4 +1,3 @@
-import json
 from flask import request
 from flask import jsonify
 from ticketapi.apps import app
@@ -7,6 +6,7 @@ from ticketapi.data.validators import *
 from ticketapi.datalayer.procedures import *
 from ticketapi.data.response import FailureResponse
 from werkzeug.exceptions import RequestTimeout
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -44,7 +44,10 @@ def login():
 
     return jsonify(authKey=result)
 
+
 @app.route('/update-employee/', methods=['POST'], strict_slashes=False)
+@requires_auth
+@requires_validation(EmployeeInfoValidator)
 def update_employee():
     """
     Update Employee page
@@ -56,7 +59,7 @@ def update_employee():
     try:
         result = update_employee(**json_data)
         
-    except RequestTimeout:
+    except:
         return FailureResponse(
             nice_message='ERROR 408 Request Timeout',
             debug_message='The database server is not responding or is down.',
@@ -75,6 +78,8 @@ def update_employee():
 
 
 @app.route('/submit-ticket/', methods=['POST'], strict_slashes=False)
+@requires_auth
+@requires_validation(TicketInfoValidator)
 def submit_ticket():
     """
     Submit Ticket page
@@ -98,8 +103,5 @@ def submit_ticket():
             nice_message='There was trouble submitting your ticket to the database. The data may be invalid.',
             debug_message='Malformed/Invalid data request sent to database'
         ).response()
-
-
-    #return 'Ticket-API submit-ticket URI {data}'.format(data=request.data)
 
     return jsonify({})
