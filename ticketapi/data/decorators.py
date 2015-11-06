@@ -1,4 +1,5 @@
 from flask import request
+from functools import wraps
 from ticketapi.data.response import FailureResponse
 from ticketapi.datalayer.procedures import check_auth
 from werkzeug.exceptions import BadRequest
@@ -16,6 +17,7 @@ def requires_validation(validator):
     :return: the requires validation decorator
     """
     def decorator(view):
+        @wraps(view)
         def view_wrapper(*args, **kwargs):
             v = validator(request)
             response = v.validate()
@@ -38,6 +40,7 @@ def requires_auth(view):
     If authentication is successful, the view will be called unaffected.
     :return: the requires authentication decorator
     """
+    @wraps(view)
     def view_wrapper(*args, **kwargs):
         nice_msg = 'There was an error authenticating you with the server'
 
