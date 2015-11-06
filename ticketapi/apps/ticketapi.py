@@ -58,6 +58,28 @@ def submit_ticket():
     Submit Ticket page
     :return:
     """
-    return 'Ticket-API submit-ticket URI {data}'.format(data=request.data)
+
+    ticket_data = request.get_json()
+
+    try:
+        result = submit_ticket(**ticket_data)
+    except:
+        return FailureResponse(
+            error_code=408,
+            nice_message='There was trouble submitting your ticket to the database',
+            debug_message='Unable to reach the database. Request Timeout.'
+        ).response()
+
+    if result is False:
+        return FailureResponse(
+            error_code=400,
+            nice_message='There was trouble submitting your ticket to the database. The data may be invalid.',
+            debug_message='Malformed/Invalid data request sent to database'
+        ).response()
+
+
+    #return 'Ticket-API submit-ticket URI {data}'.format(data=request.data)
+
+    return jsonify({})
 
 
