@@ -3,8 +3,10 @@ from ticketapi.datalayer.models import Company
 from ticketapi.datalayer.models import Session
 from ticketapi.datalayer.models import Ticket
 from ticketapi.data.logger import logger
+from ticketapi.data.crypto import crypto
 from uuid import uuid4
 from datetime import datetime
+import base64
 
 
 __all__ = ['authenticate', 'update_employee', 'submit_ticket', 'check_auth']
@@ -24,11 +26,15 @@ def authenticate(**kwargs):
         with DB() as s:
             # Query the database for a password and companyID combination
             selected_company = s.query(Company)\
-                .filter(Company.companyID == kwargs['companyID'], Company.password == kwargs['password'])\
+                .filter(Company.companyID == kwargs['companyID'])\
                 .first()
 
+            password_verified = crypto.check(kwargs['password'],
+                                             base64.standard_b64decode(selected_company.hash),
+                                             base64.standard_b64decode(selected_company.salt))
+
             # If this combination exist, the user provided valid credentials
-            if selected_company is not None:
+            if password_verified:
 
                 # Create a new session row
                 new_session = Session(
@@ -147,3 +153,15 @@ def submit_ticket(**kwargs):
     else:
         logger.error('authKey and description must be provided for the submit_ticket method')
         return False
+
+
+if __name__ == '__main__':
+    with DB() as s:
+        hashed_val, salt_val = crypto.hash('hunter2')
+        new_company = Company(
+            companyID='ayylmao',
+            hash=base64.standard_b64encode(hashed_val),
+            salt=base64.standard_b64encode(salt_val),
+            techneauxTechCompanyID=1400
+        )
+        s.add(new_company)
