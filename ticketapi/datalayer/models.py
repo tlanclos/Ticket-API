@@ -7,7 +7,7 @@ from ticketapi.data import SETTINGS
 
 __all__ = ['Authentication', 'Session', 'Ticket']
 
-connection_string = "DRIVER={dsn};UID={username};PWD={password}".format(
+connection_string = "DSN={dsn};UID={username};PWD={password}".format(
     dsn=SETTINGS['db_dsn'],
     username=SETTINGS['db_username'],
     password=SETTINGS['db_password']
