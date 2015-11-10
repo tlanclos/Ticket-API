@@ -15,7 +15,9 @@ apt-get install libpng3
 apt-get install libpng-dev
 apt-get install libz-dev
 apt-get install htop
+apt-get install unixodbc
 apt-get install unixodbc-dev
+apt-get install tdsodbc
 ```
 
 ## Install python libraries
@@ -61,7 +63,6 @@ Run this command
 a2enmod ssl
 ```
 
-
 ## Remove the default apache html file
 ```
 rm /var/www/html/index.html
@@ -86,6 +87,49 @@ Please ensure you install SSL certificates in the following locations with the f
   - Owner: root
   - Group: ssl-cert
 
+## Setup libtdsodbc.so as a driver for unixodbc
+```
+# Update our search index for mlocate
+updatedb
+
+# This will return the path to libtdsodbc.so, it is
+# important to know this path for the following step
+# When I ran the search, the path I received was:
+# /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+locate libtdsodbc.so
+
+# This one is also important
+# /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
+locate libtdsS.so
+```
+
+- Next, using the path located above, place the following in `/etc/odbcinst.ini`
+```
+[FreeTDS]
+Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
+Threading = 1
+```
+
+- Next, Copy place the following in `/etc/odbc.ini`
+```
+[SQLServer]
+Driver        = FreeTDS
+Server        = place.server.name.here
+Database      = DatabaseName
+Port          = 1433
+TDS_Version   = 7.1
+```
+
+- Last, make the lib noted above executable (for some reason it is not by default)
+```
+chmod a+x /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+```
+
+- You can test the connection via where `user` is the username and `place` is the first part of server
+```
+osql -S SQLServer -U user@place -P password
+```
 
 ## Run the make install at the root of the github repo Ticket-API
 ```
