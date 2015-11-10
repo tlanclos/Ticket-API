@@ -7,11 +7,10 @@ from ticketapi.data import SETTINGS
 
 __all__ = ['Company', 'Session', 'Ticket']
 
-connection_string = "DRIVER={{SQL Server}};Database={0};SERVER={1};UID={2};PWD={3}".format(
-    SETTINGS['db_name'],
-    SETTINGS['db_server'],
-    SETTINGS['db_username'],
-    SETTINGS['db_password']
+connection_string = "DRIVER={dsn};UID={username};PWD={password}".format(
+    dsn=SETTINGS['db_dsn'],
+    username=SETTINGS['db_username'],
+    password=SETTINGS['db_password']
 )
 connection_string = parse.quote_plus(connection_string)
 connection_string = "mssql+pyodbc:///?odbc_connect=%s" % connection_string
