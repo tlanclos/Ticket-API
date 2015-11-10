@@ -18,6 +18,7 @@
 │   ├── apps
 │   │   ├── __init__.py
 │   │   ├── nossl.py
+│   │   ├── genauth.py
 │   │   └── ticketapi.py
 │   ├── data
 │   │   ├── crypt.py
@@ -68,7 +69,6 @@
 
 > - `ticketapi.wsgi` - wsgi app containing the logic for stating the ticketapi app located in `ticketapi.apps`
 > - `nossl.wsgi` - wsgi app containing the logic for starting the nossl app located in `ticketapi.apps`
-> - `runserver.py` - this script can be used to start a development server
 > - `datalayer/` - this directory contains all methods and logic for interfacing with the provided database
 >   - `makedb.py` - this script may be used to create the tables, etc structure using the provided database configuration
 >   - `models.py` - these are the models associated with tables located within the database
@@ -84,6 +84,7 @@
 > - `apps/` - all major flask applications that are the entry point to code execution
 >   - `nossl.py` - this app is one that will always respond with a message telling the user to connect via SSL
 >   - `ticketapi.py` - this is the main app that will run all URIs required by the specification of this project
+>   - `genauth.py` - this app is a CLI utility to generate rows in the Authentication column used for authorizing a company
 
 
 
