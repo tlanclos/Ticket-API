@@ -73,7 +73,7 @@ def run_file(file):
             for request in data.get('tests').get(test):
                 req = data.get('requests').get(request)
                 uri = req['uri']
-                payload = req['payload'].format(**last_response)
+                payload = {k: v.format(**last_response) for k, v in req['payload'].iteritems()}
                 try:
                     last_response = SafeFormat(**json.loads(send_request(uri=uri, payload=payload)))
                 except:
