@@ -49,8 +49,11 @@ class Validator(object):
                 if not success:
                     return FailureResponse(
                         error_code=400,
-                        debug_message='Field %s is invalid: %s'.format(field.name, reason),
-                        nice_message='Field %s is invalid'.format(field.name)
+                        debug_message='Field {name} is invalid: {reason}'.format(
+                            name=field.name,
+                            reason=reason
+                        ),
+                        nice_message='Field {name} is invalid'.format(name=field.name)
                     )
         except:
             return FailureResponse(

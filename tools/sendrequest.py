@@ -25,6 +25,10 @@ __author__ = 'taylor'
 
 
 class SafeFormat(dict):
+    """
+    Safe format dictionary that converts missing items to empty strings
+    for use with str.format(...)
+    """
     def __missing__(self, key):
         return ''
 
@@ -73,7 +77,7 @@ def run_file(file):
             for request in data.get('tests').get(test):
                 req = data.get('requests').get(request)
                 uri = req['uri']
-                payload = {k: v.format(**last_response) for k, v in req['payload'].iteritems()}
+                payload = {k: v.format(**last_response) for k, v in req['payload'].items()}
                 try:
                     last_response = SafeFormat(**json.loads(send_request(uri=uri, payload=payload)))
                 except:

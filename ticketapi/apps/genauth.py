@@ -36,6 +36,10 @@ if __name__ == '__main__':
         print('   Username   : "{username}"'.format(username=args.username))
         if not args.password:
             password = getpass.getpass(prompt='Password for {username}: '.format(username=args.username))
+            if len(password) > 16:
+                print('Password too long, must be less than 16 characters')
+                exit(2)
+
             confirm_password = getpass.getpass(prompt='Confirm password for {username}: '.format(username=args.username))
             if password != confirm_password:
                 print('Passwords do not match')

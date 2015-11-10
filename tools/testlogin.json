@@ -4,7 +4,7 @@
       "uri": "http://localhost:50443/login",
       "payload": {
         "companyID": "TECHNEAUX",
-        "password": "techneauxtestpassword"
+        "password": "techneauxpass"
       }
     },
     "update-employee": {
