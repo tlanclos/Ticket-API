@@ -1,14 +1,13 @@
 import os
 import scrypt
 import json
-from ticketapi.data import SETTINGS_FILE
 from ticketapi.data import SETTINGS
 
 __all__ = ['crypto']
 
 
 class CryptoConsts:
-    PEPPER_FILE = SETTINGS_FILE  # location of JSON pepper file
+    PEPPER_FILE = 'test-pepper.json'  # location of JSON pepper file
     HASH_BYTES = 128  # number of bytes for hash
     SALT_BYTES = 128  # number of bytes for salt
 
@@ -102,5 +101,9 @@ if __name__ == '__main__':
     print(len(hashed_value))
     print(salt_value)
     print(len(salt_value))
+
+    import base64
+    print(base64.b64encode(hashed_value).decode('ascii'))
+
     is_correct = crypto.check('hereismypassword', hashed_value, salt_value)
     print(is_correct)

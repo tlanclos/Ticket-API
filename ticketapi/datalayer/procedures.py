@@ -62,8 +62,8 @@ def add_auth(**kwargs):
                 new_auth = Authentication(
                     techneauxTechCompanyID=selected_company.CompanyID,
                     companyID=company_id,
-                    hash=base64.standard_b64encode(hashval),
-                    salt=base64.standard_b64encode(saltval)
+                    hash=base64.standard_b64encode(hashval).decode('ascii'),
+                    salt=base64.standard_b64encode(saltval).decode('ascii')
                 )
                 s.add(new_auth)
                 return True, 'Success'
