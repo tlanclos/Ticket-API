@@ -24,6 +24,11 @@ import argparse
 __author__ = 'taylor'
 
 
+class SafeFormat(dict):
+    def __missing__(self, key):
+        return ''
+
+
 def load_test(file):
     """
     Load a json file
@@ -50,6 +55,7 @@ def send_request(uri, payload):
     print(response.text)
     print('==== BODY ====')
     print()
+    return response.text
 
 
 def run_file(file):
@@ -61,9 +67,17 @@ def run_file(file):
     """
     if file:
         data = load_test(file)
-        uri = data['uri']
-        payload = data['payload']
-        send_request(uri=uri, payload=payload)
+
+        for test in data.get('test-order'):
+            last_response = {}
+            for request in data.get('tests').get(test):
+                req = data.get('requests').get(request)
+                uri = req['uri']
+                payload = req['payload'].format(**last_response)
+                try:
+                    last_response = SafeFormat(**json.loads(send_request(uri=uri, payload=payload)))
+                except:
+                    last_response = SafeFormat()
 
 
 def run_dir(directory):

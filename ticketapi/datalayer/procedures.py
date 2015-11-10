@@ -106,8 +106,7 @@ def authenticate(**kwargs):
                 new_session = Session(
                     authKey=str(uuid4()),
                     creationTime=datetime.now(),
-                    companyID=selected_auth.companyID,
-                    company=selected_auth
+                    companyID=selected_auth.companyID
                 )
                 s.add(new_session)
 

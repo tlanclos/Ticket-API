@@ -1,7 +1,25 @@
 {
-  "uri": "http://localhost:5443/login",
-  "payload": {
-    "companyID": "Techneaux",
-    "password": "superstrongsecurepassword"
-  }
+  "requests": {
+    "login": {
+      "uri": "http://localhost:50443/login",
+      "payload": {
+        "companyID": "TECHNEAUX",
+        "password": "techneauxtestpassword"
+      }
+    },
+    "update-employee": {
+      "uri": "http://localhost:50443/update-employee",
+      "payload": {
+        "firstName": "myname",
+        "lastName": "mysurname",
+        "email": "myname.mysurname@myname.com",
+        "phoneNumber": "1235559909",
+        "authKey": "{authKey}"
+      }
+    }
+  },
+  "tests": {
+    "test1": ["login", "update-employee"]
+  },
+  "test-order": ["test1"]
 }
