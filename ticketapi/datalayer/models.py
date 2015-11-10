@@ -5,7 +5,7 @@ from urllib import parse
 from ticketapi.apps import app
 from ticketapi.data import SETTINGS
 
-__all__ = ['Company', 'Session', 'Ticket']
+__all__ = ['Authentication', 'Session', 'Ticket']
 
 connection_string = "DRIVER={dsn};UID={username};PWD={password}".format(
     dsn=SETTINGS['db_dsn'],
@@ -25,6 +25,7 @@ metadata.reflect(db.engine, schema='ticketapi')
 Base = automap_base(metadata=metadata)
 Base.prepare()
 
-Company = Base.classes.Authentication
+Authentication = Base.classes.Authentication
+Company = Base.classes.Company
 Session = Base.classes.Session
 Ticket = Base.classes.Ticket

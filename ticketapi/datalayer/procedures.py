@@ -1,4 +1,5 @@
 from ticketapi.datalayer.wrapper import *
+from ticketapi.datalayer.models import Authentication
 from ticketapi.datalayer.models import Company
 from ticketapi.datalayer.models import Session
 from ticketapi.datalayer.models import Ticket
@@ -9,7 +10,69 @@ from datetime import datetime
 import base64
 
 
-__all__ = ['authenticate', 'update_employee', 'submit_ticket', 'check_auth']
+__all__ = ['add_company', 'authenticate', 'update_employee', 'submit_ticket', 'check_auth']
+
+
+def add_company(**kwargs):
+    """
+    Add a new company to the database with a provided companyID and password and associate
+    this companyID with an existing companyName
+
+    :param kwargs:
+        companyName - the company name to associate with this companyID
+        companyID - the company identifier to create
+        password - password to encrypt and store for this company
+    :return: if the companyID already exists or companyName does not exist or
+        not all required parameters were passed in, False will be returned and a reason,
+        otherwise True and success
+    """
+    # Get the required values from the kwargs dictionary
+    company_name = kwargs.get('companyName')
+    company_id = kwargs.get('companyID')
+    password = kwargs.get('password')
+
+    # Check if all the values are validly assigned
+    if all([company_name, company_id, password]):
+        try:
+            with DB() as s:
+                selected_auth = s.query(Authentication)\
+                    .filter(Authentication.companyID == kwargs['companyID'])\
+                    .first()
+
+                # Test if there is already a pre-existing companyID with the given value
+                if selected_auth is not None:
+                    reason = 'companyID already exists'
+                    logger.error(reason)
+                    return False, reason
+
+                selected_company = s.query(Company)\
+                    .filter(Company.CompanyName == company_name)\
+                    .first()
+
+                # Test to ensure that there is a company name with the given value
+                if selected_company is None:
+                    reason = 'companyName "{name}" does not exist'.format(name=company_name)
+                    logger.error(reason)
+                    return False, reason
+
+                # Generate the hash and salt values
+                hashval, saltval = crypto.hash(password)
+
+                # Add the new row for the authentication
+                new_auth = Authentication(
+                    techneauxTechCompanyID=selected_company.CompanyID,
+                    companyID=company_id,
+                    hash=hashval,
+                    salt=saltval
+                )
+                s.add(new_auth)
+                return True, 'Success'
+        except Exception as e:
+            logger.exception(e)
+            return False, str(e)
+    else:
+        logger.error('companyID, password, and companyName must be provided to add the company')
+        return False
 
 
 def authenticate(**kwargs):
@@ -25,13 +88,15 @@ def authenticate(**kwargs):
     if 'companyID' in kwargs and 'password' in kwargs:
         with DB() as s:
             # Query the database for a password and companyID combination
-            selected_company = s.query(Company)\
-                .filter(Company.companyID == kwargs['companyID'])\
+            selected_auth = s.query(Authentication)\
+                .filter(Authentication.companyID == kwargs['companyID'])\
                 .first()
 
-            password_verified = crypto.check(kwargs['password'],
-                                             base64.standard_b64decode(selected_company.hash),
-                                             base64.standard_b64decode(selected_company.salt))
+            password_verified = crypto.check(
+                kwargs['password'],
+                base64.standard_b64decode(selected_auth.hash),
+                base64.standard_b64decode(selected_auth.salt)
+            )
 
             # If this combination exist, the user provided valid credentials
             if password_verified:
@@ -40,8 +105,8 @@ def authenticate(**kwargs):
                 new_session = Session(
                     authKey=str(uuid4()),
                     creationTime=datetime.now(),
-                    companyID=selected_company.companyID,
-                    company=selected_company
+                    companyID=selected_auth.companyID,
+                    company=selected_auth
                 )
                 s.add(new_session)
 
@@ -156,12 +221,12 @@ def submit_ticket(**kwargs):
 
 
 if __name__ == '__main__':
-    with DB() as s:
+    with DB() as session:
         hashed_val, salt_val = crypto.hash('hunter2')
-        new_company = Company(
+        new_company = Authentication(
             companyID='ayylmao',
             hash=base64.standard_b64encode(hashed_val),
             salt=base64.standard_b64encode(salt_val),
             techneauxTechCompanyID=1400
         )
-        s.add(new_company)
+        session.add(new_company)
