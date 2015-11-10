@@ -51,5 +51,5 @@ if __name__ == '__main__':
                 print(reason)
         else:
             print('User said no')
-    except (SystemExit, KeyboardInterrupt) as e:
+    except KeyboardInterrupt as e:
         print('Exiting on user command')
