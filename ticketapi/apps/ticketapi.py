@@ -5,7 +5,6 @@ from ticketapi.data.decorators import *
 from ticketapi.data.validators import *
 from ticketapi.datalayer.procedures import *
 from ticketapi.data.response import FailureResponse
-from werkzeug.exceptions import RequestTimeout
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -105,3 +104,8 @@ def submit_ticket():
         ).response()
 
     return jsonify({})
+
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run(port=50443)
