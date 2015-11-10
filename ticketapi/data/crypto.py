@@ -2,6 +2,7 @@ import os
 import scrypt
 import json
 from ticketapi.data import SETTINGS_FILE
+from ticketapi.data import SETTINGS
 
 __all__ = ['crypto']
 
@@ -23,13 +24,18 @@ class CryptoError(Exception):
 class Crypto:
     """
     Provides wrappers for scrypt that help in hashing and checking passwords with salt and pepper
+
+    :param pepper: if specified, use this pepper instead of checking CryptoConsts.PEPPER_FILE
     """
 
-    def __init__(self):
+    def __init__(self, pepper=None):
         """
         Loads pepper from filesystem
         """
-        self.__load_pepper(CryptoConsts.PEPPER_FILE)
+        if not pepper:
+            self.pepper = self.__load_pepper(CryptoConsts.PEPPER_FILE)
+        else:
+            self.pepper = bytes(pepper, encoding='utf8')
 
     @staticmethod
     def __get_salt():
@@ -54,7 +60,7 @@ class Crypto:
                     if not pepper:
                         raise CryptoError('Error initializing Crypt')
                     else:
-                        self.pepper = bytes(pepper, encoding='utf8')
+                        return bytes(pepper, encoding='utf8')
         except Exception:
             raise CryptoError('Error initializing Crypt')
 
@@ -88,7 +94,7 @@ class Crypto:
         return hashed, salt
 
 
-crypto = Crypto()
+crypto = Crypto(pepper=SETTINGS['pepper'])
 
 if __name__ == '__main__':
     hashed_value, salt_value = crypto.hash('hereismypassword')
