@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
         cont = input('Continue (y/n)? ')
         if re.match(r'y(es)?', cont, re.IGNORECASE):
-            success, reason = add_auth(companyName=args.company, companyID=args.username, password=args.password)
+            success, reason = add_auth(companyName=args.company, companyID=args.username, password=password)
             if not success:
                 print('Failed to add authentication for "{company}"'.format(company=args.company))
                 print(reason)
