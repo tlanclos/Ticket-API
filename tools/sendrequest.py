@@ -97,9 +97,9 @@ def run_file(file):
                 uri = req['uri']
                 payload = {k: v.format(**last_response) for k, v in req['payload'].items()}
                 try:
-                    last_response = SafeFormat(**json.loads(send_request(uri=uri, payload=payload)))
+                    last_response.update(SafeFormat(**json.loads(send_request(uri=uri, payload=payload))))
                 except:
-                    last_response = SafeFormat()
+                    pass
 
 
 def run_dir(directory):
