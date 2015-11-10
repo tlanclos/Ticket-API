@@ -71,8 +71,9 @@ def add_auth(**kwargs):
             logger.exception(e)
             return False, str(e)
     else:
-        logger.error('companyID, password, and companyName must be provided to add the company')
-        return False
+        reason = 'companyID, password, and companyName must be provided to add the company'
+        logger.error(reason)
+        return False, reason
 
 
 def authenticate(**kwargs):
