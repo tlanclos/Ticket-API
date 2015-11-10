@@ -42,7 +42,7 @@ if __name__ == '__main__':
     else:
         password = args.password
 
-    cont = input(prompt='Continue (y/n)? ')
+    cont = input('Continue (y/n)? ')
     if re.match(r'[yn]', cont):
         success, reason = add_auth(companyName=args.company, companyID=args.username, password=args.password)
         if not success:
