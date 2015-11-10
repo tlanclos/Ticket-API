@@ -106,14 +106,14 @@ locate libtdsS.so
 - Next, using the path located above, place the following in `/etc/odbcinst.ini`
 ```
 [FreeTDS]
-Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
-Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
-Threading = 1
+Driver      = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+Setup       = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
+Threading   = 1
 ```
 
 - Next, Copy place the following in `/etc/odbc.ini`
 ```
-[SQLServer]
+[TechneauxTicketDB]
 Driver        = FreeTDS
 Server        = place.server.name.here
 Database      = DatabaseName
