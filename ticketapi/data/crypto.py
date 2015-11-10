@@ -1,12 +1,13 @@
 import os
 import scrypt
 import json
+from ticketapi.data import SETTINGS_FILE
 
 __all__ = ['crypto']
 
 
 class CryptoConsts:
-    PEPPER_FILE = 'test-pepper.json'  # location of JSON pepper file
+    PEPPER_FILE = SETTINGS_FILE  # location of JSON pepper file
     HASH_BYTES = 128  # number of bytes for hash
     SALT_BYTES = 128  # number of bytes for salt
 
