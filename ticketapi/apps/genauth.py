@@ -4,11 +4,6 @@ import re
 from ticketapi.datalayer.procedures import add_auth
 
 
-class AddAuth(object):
-    def __init__(self):
-        pass
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Tool to generate authorization rows and add them to the database based on a company name',
