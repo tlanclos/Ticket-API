@@ -10,10 +10,10 @@ from datetime import datetime
 import base64
 
 
-__all__ = ['add_company', 'authenticate', 'update_employee', 'submit_ticket', 'check_auth']
+__all__ = ['add_auth', 'authenticate', 'update_employee', 'submit_ticket', 'check_auth']
 
 
-def add_company(**kwargs):
+def add_auth(**kwargs):
     """
     Add a new company to the database with a provided companyID and password and associate
     this companyID with an existing companyName
