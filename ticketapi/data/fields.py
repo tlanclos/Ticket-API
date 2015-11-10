@@ -216,7 +216,7 @@ class PhoneNumberField(StringField):
             number = phonenumbers.parse(value)
 
             # if the phone number is not a valid number based on the country code, then fail
-            if not phonenumbers.is_valid_number(number):
+            if not phonenumbers.is_possible_number(number):
                 return self.failure('phone number does not match valid pattern for country code {code}'.format(
                     code=number.country_code
                 ))
