@@ -6,12 +6,30 @@ Given a directory, this script can run all json files within that directory.
 The json file should be in the format:
 
 {
-    "uri": "http://localhost:5443/login",
-    "payload": {
-        ...
+  "requests": {
+    "login": {
+      "uri": "http://localhost:50443/login",
+      "payload": {
+        "companyID": "TECHNEAUX",
+        "password": "techneauxpass"
+      }
+    },
+    "update-employee": {
+      "uri": "http://localhost:50443/update-employee",
+      "payload": {
+        "firstName": "myname",
+        "lastName": "mysurname",
+        "email": "myname.mysurname@myname.com",
+        "phoneNumber": "1235559909",
+        "authKey": "{authKey}"
+      }
     }
+  },
+  "tests": {
+    "test1": ["login", "update-employee"]
+  },
+  "test-order": ["test1"]
 }
-
 It is important to note that this will only work with non-ssl connections
 currently. As previously mentioned, a better version of this will be
 written later.
