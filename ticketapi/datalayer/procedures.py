@@ -93,11 +93,13 @@ def authenticate(**kwargs):
                 .filter(Authentication.companyID == kwargs['companyID'])\
                 .first()
 
-            password_verified = crypto.check(
-                kwargs['password'],
-                base64.standard_b64decode(selected_auth.hash),
-                base64.standard_b64decode(selected_auth.salt)
-            )
+            password_verified = False
+            if selected_auth is not None:
+                password_verified = crypto.check(
+                    kwargs['password'],
+                    base64.standard_b64decode(selected_auth.hash),
+                    base64.standard_b64decode(selected_auth.salt)
+                )
 
             # If this combination exist, the user provided valid credentials
             if password_verified:

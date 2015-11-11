@@ -29,8 +29,8 @@ def login():
         result = authenticate(**json_data)
     except:
         return FailureResponse(
-            error_code=408,
-            nice_message='There was an error authenticating you with the server',
+            error_code=520,
+            nice_message='An error occurred while authenticating you',
             debug_message='An exception occurred while trying to query the database'
         ).response()
 
@@ -60,16 +60,16 @@ def update_employee():
         
     except:
         return FailureResponse(
-            nice_message='ERROR 408 Request Timeout',
-            debug_message='The database server is not responding or is down.',
-            error_code=408
+            error_code=520,
+            nice_message='An error occurred while updating your information',
+            debug_message='The database server is not responding or is down.'
         ).response()
 
     if result is False:
         return FailureResponse(
-            nice_message='ERROR 401 Unauthorized',
-            debug_message='Session ID not found.',
-            error_code=401
+            error_code=401,
+            nice_message='There was an error authenticating your request',
+            debug_message='Session ID not found.'
         ).response()
 
     else:
@@ -91,7 +91,7 @@ def submit_ticket():
         result = submit_ticket(**ticket_data)
     except:
         return FailureResponse(
-            error_code=408,
+            error_code=520,
             nice_message='There was trouble submitting your ticket to the database',
             debug_message='Unable to reach the database. Request Timeout.'
         ).response()
