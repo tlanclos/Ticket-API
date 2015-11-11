@@ -70,7 +70,7 @@ rm /var/www/html/index.html
 
 ## Add the service user
 ```
-useradd -g www-data -M -s /usr/sbin/nologin ticket-api
+useradd -g www-data -M -s /bin/bash ticket-api
 passwd ticket-api
 ```
 
