@@ -1,4 +1,3 @@
-import traceback
 from ticketapi.data.fields import *
 from ticketapi.data.response import *
 from werkzeug.exceptions import BadRequest

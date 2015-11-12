@@ -1,3 +1,4 @@
+from ticketapi.data import LOG_FILE
 import logging
 import logging.config
 
@@ -16,7 +17,7 @@ log_settings = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'detailed',
-            'filename': '/var/log/ticket-api/ticket-api.log',
+            'filename': LOG_FILE,
             'mode': 'a',
             'maxBytes': 2621440,
             'backupCount': 9,

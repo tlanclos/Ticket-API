@@ -58,14 +58,23 @@ def add_auth(**kwargs):
                 # Generate the hash and salt values
                 hashval, saltval = crypto.hash(password)
 
+                # techneaux company identifier
+                tech_comp = selected_company.CompanyID
+
                 # Add the new row for the authentication
                 new_auth = Authentication(
-                    techneauxTechCompanyID=selected_company.CompanyID,
+                    techneauxTechCompanyID=tech_comp,
                     companyID=company_id,
                     hash=base64.standard_b64encode(hashval).decode('ascii'),
                     salt=base64.standard_b64encode(saltval).decode('ascii')
                 )
                 s.add(new_auth)
+
+                logger.info('Added authentication for {tech_comp} as {comp}'.format(
+                    tech_comp=tech_comp,
+                    comp=company_id
+                ))
+
                 return True, 'Success'
         except Exception as e:
             logger.exception(e)
@@ -103,14 +112,21 @@ def authenticate(**kwargs):
 
             # If this combination exist, the user provided valid credentials
             if password_verified:
+                uuid = str(uuid4())
+                company_id = selected_auth.companyID
 
                 # Create a new session row
                 new_session = Session(
-                    authKey=str(uuid4()),
+                    authKey=uuid,
                     creationTime=datetime.now(),
-                    companyID=selected_auth.companyID
+                    companyID=company_id
                 )
                 s.add(new_session)
+
+                logger.info('Authorized {comp} with new auth {auth}'.format(
+                    comp=company_id,
+                    auth=uuid
+                ))
 
                 # And return the authorization key
                 return new_session.authKey
@@ -148,6 +164,14 @@ def update_employee(**kwargs):
                 employee.lastName = kwargs.get('lastName')
                 employee.email = kwargs.get('email')
                 employee.phoneNumber = kwargs.get('phoneNumber')
+
+                logger.info('Updated info for {first} {last} as email={email} phone={phone}'.format(
+                    first=kwargs.get('firstName'),
+                    last=kwargs.get('lastName'),
+                    email=kwargs.get('email'),
+                    phone=kwargs.get('phoneNumber')
+                ))
+
                 return True
             else:
                 logger.error('Unable to find an employee associated with the provided authentication key')
@@ -173,6 +197,7 @@ def check_auth(**kwargs):
 
             # If we have a valid session, then they key has been authorized
             if the_session is not None:
+                logger.info('Authorization key {auth} is valid'.format(auth=kwargs['authKey']))
                 return True
             else:
                 logger.error('Unable to find a session associated with the provided authentication key')
