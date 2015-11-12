@@ -16,6 +16,15 @@
         "phoneNumber": "3375677890",
         "authKey": "{authKey}"
       }
+    },
+    "submit-ticket": {
+      "uri":"http://localhost:50443/submit-ticket",
+      "payload": {
+        "location": "site1",
+        "description": "description of my problem",
+        "photo": "dajiofdaifn283sdfjan893",
+        "authKey": "{authKey}"
+      }
     }
   },
   "tests": {
