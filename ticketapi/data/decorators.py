@@ -1,5 +1,6 @@
 from flask import request
 from functools import wraps
+from ticketapi.data.logger import logger
 from ticketapi.data.response import FailureResponse
 from ticketapi.datalayer.procedures import check_auth
 from werkzeug.exceptions import BadRequest
@@ -25,6 +26,7 @@ def requires_validation(validator):
             # if the validator didn't return anything,
             # the request was validated
             if response is None:
+                logger.info('Successfully validated request')
                 return view(*args, **kwargs)
             else:
                 return response.response()
@@ -66,6 +68,7 @@ def requires_auth(view):
         try:
             # check authentication
             if check_auth(authKey=auth_key):
+                logger.info('Successfully authorized {auth}'.format(auth=auth_key))
                 return view(*args, **kwargs)
             else:
                 return FailureResponse(
