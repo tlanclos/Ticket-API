@@ -193,7 +193,7 @@ def check_auth(**kwargs):
     if 'authKey' in kwargs:
         with DB() as s:
             # Attempt to get an session associated with the auth key
-            the_session = s.query(Session.authKey).filter(Session.authKey == kwargs['authKey']).first()
+            the_session = s.query(Session).filter(Session.authKey == kwargs['authKey']).first()
 
             # If we have a valid session, then they key has been authorized
             if the_session is not None:
