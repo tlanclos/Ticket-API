@@ -190,20 +190,21 @@ def check_auth(**kwargs):
         authKey - authorization key to test
     :return: True if the the authKey was found in the database, False otherwise
     """
-    if 'authKey' in kwargs:
+    auth_key = kwargs.get('authKey')
+    if auth_key is not None:
         with DB() as s:
             # Attempt to get an session associated with the auth key
-            the_session = s.query(Session).filter(Session.authKey == kwargs['authKey']).first()
+            the_session = s.query(Session).filter(Session.authKey == auth_key).first()
 
             # If we have a valid session, then they key has been authorized
             if the_session is not None:
-                logger.info('Authorization key {auth} is valid'.format(auth=kwargs['authKey']))
+                logger.info('Authorization key {auth} is valid'.format(auth=auth_key))
                 return True
-            else:
-                logger.error('Unable to find a session associated with the provided authentication key')
+            logger.error('Unable to find a session associated with the provided authentication key')
     else:
         logger.error('authKey must be provided for the check_auth method')
-        return False
+        
+    return False
 
 
 def submit_ticket(**kwargs):
