@@ -91,7 +91,7 @@ def run_file(file):
         data = load_test(file)
 
         for test in data.get('test-order'):
-            last_response = {}
+            last_response = SafeFormat()
             for request in data.get('tests').get(test):
                 req = data.get('requests').get(request)
                 uri = req['uri']
