@@ -151,7 +151,7 @@ make install
 
 ## A guest user may also be added to allow viewing of the ticket-api log files
 ```
-useradd -m ticket-guest
+useradd -m ticket-guest -s /bin/bash
 passwd ticket-guest
 <type in a password>
 ```
