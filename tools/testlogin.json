@@ -1,14 +1,14 @@
 {
   "requests": {
     "login": {
-      "uri": "http://localhost:50443/login",
+      "uri": "https://localhost/login",
       "payload": {
-        "companyID": "TECHNEAUX",
-        "password": "techneauxpass"
+        "companyID": "TEST",
+        "password": ""
       }
     },
     "update-employee": {
-      "uri": "http://localhost:50443/update-employee",
+      "uri": "https://localhost/update-employee",
       "payload": {
         "firstName": "myname",
         "lastName": "mysurname",
@@ -18,7 +18,7 @@
       }
     },
     "submit-ticket": {
-      "uri":"http://localhost:50443/submit-ticket",
+      "uri": "https://localhost/submit-ticket",
       "payload": {
         "location": "site1",
         "description": "description of my problem",
@@ -28,7 +28,7 @@
     }
   },
   "tests": {
-    "test1": ["login", "update-employee"]
+    "test1": ["login", "update-employee", "submit-ticket"]
   },
   "test-order": ["test1"]
 }
