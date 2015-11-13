@@ -8,7 +8,7 @@ from ticketapi.data.response import FailureResponse
 
 
 @app.route('/', methods=['GET', 'POST'])
-def home(*args, **kwargs):
+def home():
     """
     Home page
     :return:
@@ -18,7 +18,7 @@ def home(*args, **kwargs):
 
 @app.route('/login/', methods=['POST'], strict_slashes=False)
 @requires_validation(AuthInfoValidator)
-def login(*args, **kwargs):
+def login():
     """
     Login page
     :return:
@@ -47,7 +47,7 @@ def login(*args, **kwargs):
 @app.route('/update-employee/', methods=['POST'], strict_slashes=False)
 @requires_auth
 @requires_validation(EmployeeInfoValidator)
-def update_employee(*args, **kwargs):
+def update_employee():
     """
     Update Employee page
     :return:
@@ -79,7 +79,7 @@ def update_employee(*args, **kwargs):
 @app.route('/submit-ticket/', methods=['POST'], strict_slashes=False)
 @requires_auth
 @requires_validation(TicketInfoValidator)
-def submit_ticket(*args, **kwargs):
+def submit_ticket():
     """
     Submit Ticket page
     :return:
