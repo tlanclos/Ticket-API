@@ -76,7 +76,8 @@ def requires_auth(view):
                     debug_message='Authentication key is invalid',
                     nice_message=nice_msg
                 ).response()
-        except:
+        except Exception as e:
+            logger.exception(e)
             return FailureResponse(
                 error_code=520,
                 debug_message='Exception occurred when querying database. Maybe the db is down',

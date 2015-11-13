@@ -43,7 +43,8 @@ class Crypto:
         """
         return os.urandom(CryptoConsts.SALT_BYTES)
 
-    def __load_pepper(self, file_loc):
+    @staticmethod
+    def __load_pepper(file_loc):
         """
         Loads pepper from file at file_loc and sets pepper attribute.
         File should be JSON formatted with a 'pepper' key.

@@ -5,6 +5,7 @@ from ticketapi.data.decorators import *
 from ticketapi.data.validators import *
 from ticketapi.datalayer.procedures import *
 from ticketapi.data.response import FailureResponse
+from ticketapi.data.logger import logger
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -27,7 +28,8 @@ def login():
 
     try:
         result = authenticate(**json_data)
-    except:
+    except Exception as e:
+        logger.exception(e)
         return FailureResponse(
             error_code=520,
             nice_message='An error occurred while authenticating you',
@@ -58,7 +60,8 @@ def update_employee():
     try:
         result = update_employee(**json_data)
         
-    except:
+    except Exception as e:
+        logger.exception(e)
         return FailureResponse(
             error_code=520,
             nice_message='An error occurred while updating your information',
@@ -89,11 +92,12 @@ def submit_ticket():
 
     try:
         result = submit_ticket(**ticket_data)
-    except:
+    except Exception as e:
+        logger.exception(e)
         return FailureResponse(
             error_code=520,
             nice_message='There was trouble submitting your ticket to the database',
-            debug_message='Unable to reach the database. Request Timeout.'
+            debug_message='Unable to reach the database.'
         ).response()
 
     if result is False:

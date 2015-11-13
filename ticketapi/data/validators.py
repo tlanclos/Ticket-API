@@ -54,7 +54,8 @@ class Validator(object):
                         ),
                         nice_message='Field {name} is invalid'.format(name=field.name)
                     )
-        except:
+        except Exception as e:
+            logger.exception(e)
             return FailureResponse(
                 error_code=520,
                 debug_message='An exception occurred during validation, see traceback',
