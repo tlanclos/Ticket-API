@@ -98,6 +98,6 @@ class TicketInfoValidator(Validator):
     fields = [
         StringField('location', max_length=64),
         StringField('description', required=True, max_length=1024),
-        ImageField('photo', required=False),
+        ImageField('photo', required=False, encoding='base64'),
         StringField('authKey', required=True)
     ]
