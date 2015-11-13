@@ -228,10 +228,14 @@ def submit_ticket(**kwargs):
             if the_session is not None:
 
                 try:
-                    photo_data = base64.standard_b64decode(kwargs.get('photo'))
+                    photo_enc = kwargs.get('photo')
+                    if photo_enc is not None or photo_enc.strip() != '':
+                        photo_data = base64.standard_b64decode(photo_enc)
+                    else:
+                        photo_data = None
                 except Exception as e:
                     logger.exception(e)
-                    photo_data = None
+                    return False
 
                 # Create the ticket and add it to the database
                 new_ticket = Ticket(
