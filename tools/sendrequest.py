@@ -70,14 +70,14 @@ def send_request(uri, payload):
     :param payload: payload to send with the url
     :return:
     """
-    response = requests.post(url=uri, data=json.dumps(payload), allow_redirects=False)
+    response = requests.post(url=uri, data=json.dumps(payload), allow_redirects=False, verify=False)
     print('Response Code:', response.status_code)
     print('Response Reason:', response.reason)
     print('==== BODY ====')
     print(response.text)
     print('==== BODY ====')
     print()
-    return response.text
+    return response.status_code, response.text
 
 
 def run_file(file):
@@ -91,15 +91,21 @@ def run_file(file):
         data = load_test(file)
 
         for test in data.get('test-order'):
+            print('running {test}'.format(test=test))
             last_response = SafeFormat()
             for request in data.get('tests').get(test):
+                print('running {req}'.format(req=request))
                 req = data.get('requests').get(request)
                 uri = req['uri']
                 payload = {k: v.format(**last_response) for k, v in req['payload'].items()}
                 try:
-                    last_response.update(SafeFormat(**json.loads(send_request(uri=uri, payload=payload))))
-                except:
-                    pass
+                    code, text = send_request(uri=uri, payload=payload)
+                    if code != 200:
+                        print('Failed!')
+                        return
+                    last_response.update(SafeFormat(**json.loads(text)))
+                except Exception as e:
+                    print(e)
 
 
 def run_dir(directory):

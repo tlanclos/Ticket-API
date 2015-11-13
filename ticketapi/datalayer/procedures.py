@@ -203,7 +203,7 @@ def check_auth(**kwargs):
             logger.error('Unable to find a session associated with the provided authentication key')
     else:
         logger.error('authKey must be provided for the check_auth method')
-        
+
     return False
 
 
