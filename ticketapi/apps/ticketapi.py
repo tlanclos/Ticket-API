@@ -19,7 +19,7 @@ def home():
 
 @app.route('/login/', methods=['POST'], strict_slashes=False)
 @requires_validation(AuthInfoValidator)
-def login():
+def login_route():
     """
     Login page
     :return:
@@ -49,7 +49,7 @@ def login():
 @app.route('/update-employee/', methods=['POST'], strict_slashes=False)
 @requires_auth
 @requires_validation(EmployeeInfoValidator)
-def update_employee():
+def update_employee_route():
     """
     Update Employee page
     :return:
@@ -59,7 +59,6 @@ def update_employee():
 
     try:
         result = update_employee(**json_data)
-        
     except Exception as e:
         logger.exception(e)
         return FailureResponse(
@@ -82,13 +81,13 @@ def update_employee():
 @app.route('/submit-ticket/', methods=['POST'], strict_slashes=False)
 @requires_auth
 @requires_validation(TicketInfoValidator)
-def submit_ticket():
+def submit_ticket_route():
     """
     Submit Ticket page
     :return:
     """
 
-    ticket_data = request.get_json()
+    ticket_data = request.get_json(force=True)
 
     try:
         result = submit_ticket(**ticket_data)
