@@ -75,6 +75,18 @@ passwd ticket-api
 ```
 
 ## Install SSL certificates
+
+If SSL certificates need to be created (self-signed certificates) you may do so here with:
+```
+openssl genrsa -des3 -out techneauxcmps.key 4096
+openssl req -new -key techneauxcmps.key -out techneauxcmps.csr
+cp techneauxcmps.key techneauxcmps.key.org
+openssl rsa -in techneauxcmps.key.org -out techneauxcmps.key
+openssl x509 -req -days 60 -in techneauxcmps.csr -signkey techneauxcmps.key -out techneauxcmps.crt
+```
+It is not recommended to do the above and the certificate above will expire in 60 days. If possible a
+certificate with proper signing is recommended.
+
 Please ensure you install SSL certificates in the following locations with the following permissions and names.
 - Certificate:
   - Location: /etc/ssl/certs/techneauxcmps.crt
@@ -135,4 +147,18 @@ osql -S SQLServer -U user@place -P password
 ```
 make
 make install
+```
+
+## A guest user may also be added to allow viewing of the ticket-api log files
+```
+useradd -m ticket-guest
+passwd ticket-guest
+<type in a password>
+```
+
+You may also want to add some aliases to view and follow the logs, you can do this by adding the following
+to ticket-guest's .bashrc file
+```
+alias watchlog='tail -f /var/log/ticket-api/ticket-api.log'
+alias viewlog='less /var/log/ticket-api/ticket-api.log'
 ```
