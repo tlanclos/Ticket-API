@@ -79,7 +79,7 @@ def requires_auth(view):
         except:
             return FailureResponse(
                 error_code=520,
-                debug_message='Exception occurred when querying database.  Maybe the db is down',
+                debug_message='Exception occurred when querying database. Maybe the db is down',
                 nice_message=nice_msg
             ).response()
 
