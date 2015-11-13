@@ -1,6 +1,7 @@
 import sys
-from validate_email import validate_email
 import phonenumbers
+import base64
+from validate_email import validate_email
 
 
 __all__ = [
@@ -228,10 +229,39 @@ class PhoneNumberField(StringField):
 
 class ImageField(StringField):
     """
-    Image field currently works the same as string field, this class is a placeholder
-    for a future implementation that validates other image features such as resolution, etc.
+    Image field will validate the field to be a valid encoded string that may be configured.
+    The encoded string currently only accepts base64 which will just ensure that the image is
+    of proper base64 string.
+
+    :param name: name of the field located within validation data
+    :param required: states whether or not the field is required in the validation data
+    :param encoding: what type of encoding is the image in should this be
     """
-    pass
+    def __init__(self, name, required=True, **kwargs):
+        super().__init__(name, required=required, **kwargs)
+        self.validators.append(ImageField._validate)
+
+        self.encoding = kwargs.get('encoding', 'base64')
+
+    def _validate(self, value):
+        """
+        Validate the image itself.
+
+        :param value: value to validate
+        :return: success or failure as a tuple (status, message)
+        """
+        if self.encoding == 'base64':
+            try:
+                if value is not None or value.strip() != '':
+                    # Here we attempt to base64 decode the image using the standard
+                    # base64 alphabet, this will throw an exception if it is not in
+                    # the correct base64 format (wrong padding, etc)
+                    base64.standard_b64decode(value)
+                return self.success()
+            except:
+                return self.failure('image not in valid base64 format')
+        else:
+            return self.success()
 
 
 if __name__ == '__main__':
