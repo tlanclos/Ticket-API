@@ -238,6 +238,8 @@ def submit_ticket(**kwargs):
                 )
                 s.add(new_ticket)
 
+                logger.info('Successfully submitted ticket for auth={auth}'.format(auth=kwargs['authKey']))
+
                 # We have successfully add a ticket to the database
                 return True
             else:
