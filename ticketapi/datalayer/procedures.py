@@ -5,6 +5,7 @@ from ticketapi.datalayer.models import Session
 from ticketapi.datalayer.models import Ticket
 from ticketapi.data.logger import logger
 from ticketapi.data.crypto import crypto
+from sqlalchemy import func
 from uuid import uuid4
 from datetime import datetime
 import base64
@@ -33,10 +34,11 @@ def add_auth(**kwargs):
 
     # Check if all the values are validly assigned
     if all([company_name, company_id, password]):
+        company_id = company_id.upper()
         try:
             with DB() as s:
                 selected_auth = s.query(Authentication)\
-                    .filter(Authentication.companyID == kwargs['companyID'])\
+                    .filter(func.upper(Authentication.companyID) == func.upper(kwargs['companyID']))\
                     .first()
 
                 # Test if there is already a pre-existing companyID with the given value
