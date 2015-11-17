@@ -16,6 +16,7 @@ connection_string = parse.quote_plus(connection_string)
 connection_string = "mssql+pyodbc:///?odbc_connect=%s" % connection_string
 
 app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
 db = SQLAlchemy(app)
 
 metadata = MetaData()
