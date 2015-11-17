@@ -237,7 +237,7 @@ def submit_ticket(**kwargs):
                         # Here we attempt to base64 decode the image using the standard
                         # base64 alphabet, this will throw an exception if it is not in
                         # the correct base64 format (wrong padding, etc)
-                        photo_data = base64.standard_b64decode(photo_enc)
+                        photo_data = base64.standard_b64decode(photo_enc.replace('\n', ''))
                     else:
                         photo_data = None
                 except Exception as e:
