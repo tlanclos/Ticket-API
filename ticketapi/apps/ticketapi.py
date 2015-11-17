@@ -12,7 +12,8 @@ from ticketapi.data.logger import logger
 def home():
     """
     Home page
-    :return:
+
+    :return: home page that says Welcome to Ticket-API
     """
     return 'Welcome to Ticket-API!'
 
@@ -21,8 +22,11 @@ def home():
 @requires_validation(AuthInfoValidator)
 def login_route():
     """
-    Login page
-    :return:
+    Login page will authorize a customer given a set of credentials. If there is success, an authKey will
+    be provided in json format in the body of the response, otherwise a failure response with a standard
+    layout will be sent back in the body.
+
+    :return: a response object with the appropriate body and response code
     """
     json_data = request.get_json(force=True)
 
@@ -51,8 +55,11 @@ def login_route():
 @requires_validation(EmployeeInfoValidator)
 def update_employee_route():
     """
-    Update Employee page
-    :return:
+    Update Employee will update employee information in the database with an associated session id (authKey). This
+    key must provided in the request, otherwise this function will not run (will be stopped by the decorator
+    requires_auth). If that an the information was validated, then this function will update the employee's info.
+
+    :return: an empty json body response on success and standard failure response json on failure.
     """
 
     json_data = request.get_json(force=True)
@@ -83,8 +90,11 @@ def update_employee_route():
 @requires_validation(TicketInfoValidator)
 def submit_ticket_route():
     """
-    Submit Ticket page
-    :return:
+    Submit Ticket will submit a ticket to the database. This function requires authentication before being ran and
+    must be passed an authKey in the json body in order to run. If all information is validated, this function will
+    submit the ticket to the database using submit_ticket.
+
+    :return: an empty json body response on success and standard failure response json on failure.
     """
 
     ticket_data = request.get_json(force=True)

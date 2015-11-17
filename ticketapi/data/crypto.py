@@ -7,7 +7,7 @@ __all__ = ['crypto']
 
 
 class CryptoConsts:
-    PEPPER_FILE = 'test-pepper.json'  # location of JSON pepper file
+    PEPPER_FILE = 'test-pepper.json'  # location of default JSON pepper file
     HASH_BYTES = 128  # number of bytes for hash
     SALT_BYTES = 128  # number of bytes for salt
 
@@ -94,6 +94,7 @@ class Crypto:
         return hashed, salt
 
 
+# Create a package level crypto object that may be used elsewhere
 crypto = Crypto(pepper=SETTINGS['pepper'])
 
 if __name__ == '__main__':

@@ -43,6 +43,7 @@ class Validator(object):
                     nice_message='Something went wrong while performing the operation',
                 )
 
+            # Attempt to validate the fields in our fields variable
             for field in self.fields:
                 success, reason = field.validate(data.get(field.name))
                 if not success:
