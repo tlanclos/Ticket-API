@@ -34,7 +34,6 @@ def add_auth(**kwargs):
 
     # Check if all the values are validly assigned
     if all([company_name, company_id, password]):
-        company_id = company_id.upper()
         try:
             with DB() as s:
                 selected_auth = s.query(Authentication)\
@@ -101,7 +100,7 @@ def authenticate(**kwargs):
         with DB() as s:
             # Query the database for a password and companyID combination
             selected_auth = s.query(Authentication)\
-                .filter(Authentication.companyID == kwargs['companyID'])\
+                .filter(func.upper(Authentication.companyID) == func.upper(kwargs['companyID']))\
                 .first()
 
             password_verified = False
