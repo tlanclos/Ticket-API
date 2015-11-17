@@ -256,7 +256,7 @@ class ImageField(StringField):
                     # Here we attempt to base64 decode the image using the standard
                     # base64 alphabet, this will throw an exception if it is not in
                     # the correct base64 format (wrong padding, etc)
-                    base64.standard_b64decode(value)
+                    base64.standard_b64decode(value.replace('\n', ''))
                 return self.success()
             except:
                 return self.failure('image not in valid base64 format')
