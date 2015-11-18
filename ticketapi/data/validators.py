@@ -97,7 +97,7 @@ class TicketInfoValidator(Validator):
     and 'ImageField'.
     """
     fields = [
-        StringField('location', max_length=64),
+        StringField('location', required=False, max_length=64),
         StringField('description', required=True, max_length=1024),
         ImageField('photo', required=False, encoding='base64'),
         StringField('authKey', required=True)
