@@ -12,7 +12,8 @@ The json file should be in the format:
       "payload": {
         "companyID": "TECHNEAUX",
         "password": "techneauxpass"
-      }
+      },
+      "exp_response_code": 200
     },
     "update-employee": {
       "uri": "http://localhost:50443/update-employee",
@@ -22,7 +23,8 @@ The json file should be in the format:
         "email": "myname.mysurname@myname.com",
         "phoneNumber": "1235559909",
         "authKey": "{authKey}"
-      }
+      },
+      "exp_response_code": 200
     }
   },
   "tests": {
@@ -85,8 +87,9 @@ def run_file(file):
     Run a test on a single file provided file
 
     :param file: test file to load
-    :return: nothing
+    :return: test fail count
     """
+    fail_count = 0
     if file:
         data = load_test(file)
 
@@ -97,15 +100,21 @@ def run_file(file):
                 print('running {req}'.format(req=request))
                 req = data.get('requests').get(request)
                 uri = req['uri']
-                payload = {k: v.format(**last_response) for k, v in req['payload'].items()}
+                exp_code = req.get('exp_response_code', 200)
+                payload = {k: v.format(**last_response) if isinstance(v, str) else v for k, v in req['payload'].items()}
                 try:
                     code, text = send_request(uri=uri, payload=payload)
-                    if code != 200:
-                        print('Failed!')
-                        return
+                    if code != exp_code:
+                        print('{test} Failed!'.format(test=test))
+                        fail_count += 1
+                        break
                     last_response.update(SafeFormat(**json.loads(text)))
                 except Exception as e:
                     print(e)
+            else:
+                print('{test} Passed!'.format(test=test))
+            print()
+    return fail_count
 
 
 def run_dir(directory):
@@ -113,13 +122,15 @@ def run_dir(directory):
     Run all test files within a directory
 
     :param directory: directory to test
-    :return: nothing
+    :return: total fail count of all tests
     """
+    total_fail_count = 0
     if directory:
         files = os.listdir(directory)
         tests = [file for file in files if os.path.splitext(file)[1] == '.json']
         for test in tests:
-            run_file(test)
+            total_fail_count += run_file(test)
+    return total_fail_count
 
 
 if __name__ == '__main__':
@@ -131,6 +142,13 @@ if __name__ == '__main__':
     # Get our arguments
     args = parser.parse_args()
 
+    # Initially we have 0 failed tests
+    fail_count = 0
+
     # Run all files and directories specified
-    run_file(args.file)
-    run_dir(args.dir)
+    fail_count += run_file(args.file)
+    fail_count += run_dir(args.dir)
+    if fail_count > 0:
+        print('{count} tests Failed!'.format(count=fail_count))
+    else:
+        print('All tests Passed!')
