@@ -85,6 +85,7 @@
 >   - `nossl.py` - this app is one that will always respond with a message telling the user to connect via SSL
 >   - `ticketapi.py` - this is the main app that will run all URIs required by the specification of this project
 >   - `genauth.py` - this app is a CLI utility to generate rows in the Authentication column used for authorizing a company
+>   - `getphoto.py` - this app is a CLI utiltity that allows the user to view or save a photo from the database, it is simple and meant for testing
 
 
 
