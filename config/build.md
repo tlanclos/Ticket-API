@@ -18,6 +18,9 @@ apt-get install htop
 apt-get install unixodbc
 apt-get install unixodbc-dev
 apt-get install tdsodbc
+apt-get install xauth
+apt-get install xorg
+apt-get install ImageMagick
 ```
 
 ## Install python libraries
@@ -70,8 +73,15 @@ rm /var/www/html/index.html
 
 ## Add the service user
 ```
-useradd -g www-data -M -s /bin/bash ticket-api
-passwd ticket-api
+useradd -g www-data -m --home /home/ticket-api -s /bin/bash ticket-api
+passwd ticket-api  # A password will be required to use the getphoto tool which requires an X session to display the photo
+```
+
+Now we should prevent ticket-api from logging in to the server via SSH (with password).
+Add the following to the end of `/etc/ssh/sshd_config`:
+```
+Match User ticket-api
+    PasswordAuthentication no
 ```
 
 ## Install SSL certificates
