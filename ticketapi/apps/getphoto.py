@@ -71,6 +71,10 @@ if __name__ == '__main__':
                 img = get_image(img_data)
 
                 if args.save:
+                    if not os.path.exists(PHOTO_LOCATION):
+                        # Create the directory if it does not exist
+                        os.mkdir(PHOTO_LOCATION)
+                        
                     # Since we're saving in an explicit directory we definitely have access to,
                     # we get the basename of the passed in save location here and join it with the photo path
                     path = os.path.join(PHOTO_LOCATION, basename(args.save))
