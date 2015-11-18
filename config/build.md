@@ -21,6 +21,7 @@ apt-get install tdsodbc
 apt-get install xauth
 apt-get install xorg
 apt-get install ImageMagick
+apt-get install xclip
 ```
 
 ## Install python libraries
@@ -38,6 +39,7 @@ pip3 install validate_email
 pip3 install phonenumbers
 pip3 install pyodbc
 pip3 install scrypt
+pip3 install pyperclip
 ```
 
 ## Setup mod_wsgi
