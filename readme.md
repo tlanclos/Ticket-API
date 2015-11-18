@@ -43,6 +43,7 @@
 │   └── ticketapi.wsgi
 ├── tools
 │   ├── sendrequest.py
+│   ├── b64encode.py
 │   └── testlogin.json
 └── vars.mk
 ```
@@ -53,7 +54,7 @@
 
 ### Tools directory
 
-> This directory will contain tests that will be used to test the API's functionality when functionality testing is needed. Currently, there is a script called `sendrequest.py`. This script will simply ready in some JSON definition (test) files and run them. This will be extended upon in the future.
+> This directory will contain tests that will be used to test the API's functionality when functionality testing is needed. Currently, there is a script called `sendrequest.py`. This script will simply ready in some JSON definition (test) files and run them. There is also a file `b64encode.py` which a simple utility used to convert a file to base64 and copy to your clipboard if needed, save to a file, and print to stdout.
 
 ### Makefile structure
 
