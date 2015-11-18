@@ -6,8 +6,8 @@ __all__ = ['fields', 'response', 'logger', 'validators', 'decorators']
 
 
 # Common variables for file locations
-TICKET_API_ROOT = '/var/www/html'
-SETTINGS_FILE = os.path.join(TICKET_API_ROOT, 'ticketapi/settings.json')
+TICKET_API_ROOT = '/var/www/html/ticketapi'
+SETTINGS_FILE = os.path.join(TICKET_API_ROOT, 'settings.json')
 LOG_FILE = '/var/log/ticket-api/ticket-api.log'
 
 # Open the file and read it's json contents into SETTINGS
