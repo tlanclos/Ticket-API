@@ -16,9 +16,17 @@ connection_string = "DSN={dsn};UID={username};PWD={password}".format(
 connection_string = parse.quote_plus(connection_string)
 connection_string = "mssql+pyodbc:///?odbc_connect=%s" % connection_string
 
+
 # Set the app's connection string
 app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
+
+# Tell SQLAlchemy to track modification of objects and emit signals
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+# The connection recycle timeout is now 30 minutes
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
+
+
 db = SQLAlchemy(app)
 
 metadata = MetaData()
