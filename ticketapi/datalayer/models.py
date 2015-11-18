@@ -1,4 +1,5 @@
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import MetaData
 from urllib import parse
@@ -27,7 +28,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
 
 
+# Get the db object and set the legacy_schema_aliasing flag to False, this flag should
+# not be needed for the current database and will throw warnings by SQLAlchemy's dialect
 db = SQLAlchemy(app)
+db.engine.dialect.legacy_schema_aliasing = False
 
 metadata = MetaData()
 
