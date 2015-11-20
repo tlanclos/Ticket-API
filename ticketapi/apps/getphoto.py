@@ -1,6 +1,7 @@
 import os
 import argparse
 from os.path import basename
+from sqlalchemy import desc
 from ticketapi.datalayer import *
 from ticketapi.data.logger import logger
 from ticketapi.data import LOG_FILE
@@ -39,7 +40,8 @@ if __name__ == '__main__':
 
     # Setup our arguments
     parser.add_argument(
-        'ticket_id',
+        '--ticket-id', '-t',
+        dest='ticket_id',
         metavar='888',
         type=int,
         help='id of the ticket to pull from the database, this may require examining the database itself.'
@@ -63,8 +65,13 @@ if __name__ == '__main__':
 
     try:
         with DB() as s:
-            # Open a query for the selected ticket
-            ticket = s.query(Ticket).filter(Ticket.ticketID == args.ticket_id).first()
+            if args.ticket_id is None:
+                # If we don't have a ticket_id, grab the last one
+                ticket = s.query(Ticket).order_by(desc(Ticket.ticketID)).first()
+            else:
+                # Open a query for the selected ticket
+                ticket = s.query(Ticket).filter(Ticket.ticketID == args.ticket_id).first()
+                
             if ticket is not None:
                 # Here we take in the photo and get the PIL image associated with it
                 img_data = ticket.photo
