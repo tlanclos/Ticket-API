@@ -102,6 +102,8 @@ def run_file(file):
                 uri = req['uri']
                 exp_code = req.get('exp_response_code', 200)
                 payload = {k: v.format(**last_response) if isinstance(v, str) else v for k, v in req['payload'].items()}
+                print(uri)
+                print(payload)
                 try:
                     code, text = send_request(uri=uri, payload=payload)
                     if code != exp_code:
