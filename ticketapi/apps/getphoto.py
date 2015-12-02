@@ -75,6 +75,10 @@ if __name__ == '__main__':
             if ticket is not None:
                 # Here we take in the photo and get the PIL image associated with it
                 img_data = ticket.photo
+                if not img_data:
+                    print('image is empty')
+                    logger.info('image is empty')
+                    exit(1)
                 img = get_image(img_data)
 
                 if args.save:
