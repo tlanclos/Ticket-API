@@ -232,7 +232,7 @@ def submit_ticket(**kwargs):
                     # get the photo passed to this call and ensure it is
                     # not None or empty string, if it is, we will insert the
                     # image as empty because we will technically support no image
-                    photo_enc = kwargs.get('photo')
+                    photo_enc = kwargs.get('photo', '')
                     if photo_enc is not None or photo_enc.strip() != '':
                         # Here we attempt to base64 decode the image using the standard
                         # base64 alphabet, this will throw an exception if it is not in
