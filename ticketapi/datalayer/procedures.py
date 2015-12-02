@@ -161,16 +161,16 @@ def update_employee(**kwargs):
 
             # If we have a valid employee, then update his/her information
             if employee is not None:
-                employee.firstName = kwargs.get('firstName')
-                employee.lastName = kwargs.get('lastName')
-                employee.email = kwargs.get('email')
-                employee.phoneNumber = kwargs.get('phoneNumber')
+                employee.firstName = kwargs.get('firstName', '')
+                employee.lastName = kwargs.get('lastName', '')
+                employee.email = kwargs.get('email', '')
+                employee.phoneNumber = kwargs.get('phoneNumber', '')
 
                 logger.info('Updated info for {first} {last} as email={email} phone={phone}'.format(
-                    first=kwargs.get('firstName'),
-                    last=kwargs.get('lastName'),
-                    email=kwargs.get('email'),
-                    phone=kwargs.get('phoneNumber')
+                    first=kwargs.get('firstName', ''),
+                    last=kwargs.get('lastName', ''),
+                    email=kwargs.get('email', ''),
+                    phone=kwargs.get('phoneNumber', '')
                 ))
 
                 return True
@@ -248,7 +248,7 @@ def submit_ticket(**kwargs):
                 new_ticket = Ticket(
                     authKey=kwargs['authKey'],
                     description=kwargs['description'],
-                    location=kwargs.get('location'),
+                    location=kwargs.get('location', ''),
                     photo=photo_data,
                     creationTime=datetime.now(),
                     session=the_session
